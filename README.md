@@ -8,6 +8,8 @@
 [![Build Status](https://api.cirrus-ci.com/github/MineralsCloud/CrystallographyBase.jl.svg)](https://cirrus-ci.com/github/MineralsCloud/CrystallographyBase.jl)
 [![pipeline status](https://gitlab.com/singularitti/CrystallographyBase.jl/badges/master/pipeline.svg)](https://gitlab.com/singularitti/CrystallographyBase.jl/-/pipelines)
 [![Coverage](https://codecov.io/gh/MineralsCloud/CrystallographyBase.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/MineralsCloud/CrystallographyBase.jl)
+[![PkgEval](https://JuliaCI.github.io/NanosoldierReports/pkgeval_badges/C/CrystallographyBase.svg)](https://JuliaCI.github.io/NanosoldierReports/pkgeval_badges/report.html)
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/organization/repository)
 
 ## Package Features
 
@@ -47,13 +49,14 @@ pkg> add CrystallographyBase#master
 
 ## Compatibility
 
-- [Julia version: `v1.3.0` to `v1.6.1`](https://julialang.org/downloads/)
+- [Julia version: `v1.3.0` to `v1.7.2`](https://julialang.org/downloads/)
 - Dependencies:
   - [`Combinatorics.jl`](https://github.com/JuliaMath/Combinatorics.jl) `v0.7.0` and above
   - [`Compat.jl`](https://github.com/JuliaLang/Compat.jl) `v2.2.0` and above
   - [`CoordinateTransformations.jl`](https://github.com/JuliaGeometry/CoordinateTransformations.jl) `v0.5.1` and above
   - [`Counters.jl`](https://github.com/scheinerman/Counters.jl) `v0.3.0` and above
   - [`Functors.jl`](https://github.com/FluxML/Functors.jl) `v0.1.0` and above
+  - [`PeriodicTable.jl`](https://github.com/JuliaPhysics/PeriodicTable.jl) `v0.1.0` and above
   - [`Spglib.jl`](https://github.com/singularitti/Spglib.jl) `v0.2.0` and above
   - [`StaticArrays.jl`](https://github.com/JuliaArrays/StaticArrays.jl) `v0.8.3` and above
 - OS: macOS, Linux, Windows, and FreeBSD
