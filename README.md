@@ -27,8 +27,8 @@ You are very welcome to contribute.
 
 `CrystallographyBase` is a &nbsp;
 <a href="https://julialang.org">
-    <img src="https://julialang.org/assets/infra/julia.ico" width="16em">
-    Julia Language
+<img src="https://julialang.org/assets/infra/julia.ico" width="16em">
+Julia Language
 </a>
 &nbsp; package. To install `CrystallographyBase`,
 please <a href="https://docs.julialang.org/en/v1/manual/getting-started/">open
