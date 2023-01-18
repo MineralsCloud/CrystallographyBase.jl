@@ -22,9 +22,9 @@ version = "3.3.6"
 
 [[deps.CommonMark]]
 deps = ["Crayons", "JSON", "URIs"]
-git-tree-sha1 = "86cce6fd164c26bad346cc51ca736e692c9f553c"
+git-tree-sha1 = "58616fd35e227979e609a6d1de09b8d3893f769f"
 uuid = "a80b9123-70ca-4bc0-993e-6e3bcb318db6"
-version = "0.8.7"
+version = "0.8.8"
 
 [[deps.Compat]]
 deps = ["Dates", "LinearAlgebra", "UUIDs"]
@@ -50,7 +50,7 @@ version = "4.1.1"
 
 [[deps.CrystallographyBase]]
 deps = ["CoordinateTransformations", "EnumX", "Functors", "LinearAlgebra", "Requires", "StaticArrays", "StructEquality"]
-git-tree-sha1 = "73f8e5e696d98913914ba98c3ce68ffecbd944a0"
+git-tree-sha1 = "169151f82a48f5a5c719bee0958d87040ac5d096"
 repo-rev = "main"
 repo-url = "https://github.com/MineralsCloud/CrystallographyBase.jl"
 uuid = "93b1d1cd-a8ea-4aa5-adb1-b2407ea0ba8d"
