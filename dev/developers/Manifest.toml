@@ -50,7 +50,7 @@ version = "4.1.1"
 
 [[deps.CrystallographyBase]]
 deps = ["CoordinateTransformations", "EnumX", "Functors", "LinearAlgebra", "Requires", "StaticArrays", "StructEquality"]
-git-tree-sha1 = "169151f82a48f5a5c719bee0958d87040ac5d096"
+git-tree-sha1 = "e5d4275ff1991e7407b5d290484a83c6d238a733"
 repo-rev = "main"
 repo-url = "https://github.com/MineralsCloud/CrystallographyBase.jl"
 uuid = "93b1d1cd-a8ea-4aa5-adb1-b2407ea0ba8d"
