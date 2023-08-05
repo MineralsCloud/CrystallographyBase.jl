@@ -39,7 +39,6 @@ function crystaldensity(lattice::Lattice, atoms)
     return mass / volume
 end
 crystaldensity(cell::Cell) = crystaldensity(Lattice(cell), cell.atoms)
-const density = crystaldensity  # For compatibility reason
 
 atomicmass(element::Element) = element.atomic_mass
 atomicmass(i::Union{AbstractString,Integer,Symbol}) = elements[i].atomic_mass
