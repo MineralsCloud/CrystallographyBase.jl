@@ -1,6 +1,5 @@
 using CrystallographyCore: Cell, natoms, atomtypes, eachatom
 using LinearAlgebra: isdiag, diag
-using StaticArrays: MVector
 
 export Cell, natoms, atomtypes, eachatom
 
