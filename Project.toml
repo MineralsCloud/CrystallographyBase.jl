@@ -5,16 +5,15 @@ version = "0.11.0"
 
 [deps]
 AnonymousEnums = "1b8a1bdb-a29a-4350-a16c-c7e9322d6a39"
+CrystallographyCore = "80545937-1184-4bc9-b283-396e91386b5c"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Mendeleev = "c116f080-063d-490a-9873-2b5b2cce4c34"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
-StructEquality = "6ec83bb0-ed9f-11e9-3b4c-2b04cb4e219c"
 
 [compat]
 AnonymousEnums = "0.1"
 Mendeleev = "0.2, 0.3, 1"
 StaticArrays = "0.8.3, 0.9, 0.10, 0.11, 0.12, 1"
-StructEquality = "2"
 julia = "1.6"
 
 [extras]

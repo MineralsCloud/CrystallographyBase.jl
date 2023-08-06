@@ -7,7 +7,7 @@ Depth = 2
 
 ## Basis vectors
 
-In `CrystallographyBase`, basis vectors are represented by three-column vectors:
+In this package, basis vectors are represented by three-column vectors:
 
 ```math
 \mathbf{a} = \begin{bmatrix}
