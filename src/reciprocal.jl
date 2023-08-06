@@ -1,7 +1,9 @@
 using LinearAlgebra: cross
 
+import CrystallographyCore: basisvectors
+
 export ReciprocalPoint,
-    ReciprocalLattice, MonkhorstPackGrid, reciprocal, coordinates, weights
+    ReciprocalLattice, MonkhorstPackGrid, reciprocal, coordinates, weights, basisvectors
 
 """
     ReciprocalLattice(data::MMatrix)

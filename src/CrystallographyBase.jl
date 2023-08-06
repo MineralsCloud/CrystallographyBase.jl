@@ -2,7 +2,6 @@ module CrystallographyBase
 
 using LinearAlgebra: dot
 using StaticArrays: SVector, MMatrix
-using StructEquality: @struct_hash_equal_isequal_isapprox
 
 # `LinearAlgebra.det` is much slower and more inaccurate than my simple `_det`.
 function _det(matrix)
