@@ -20,6 +20,7 @@ Pages = ["public.md"]
 ```@docs
 Lattice
 isrighthanded
+islefthanded
 basisvectors
 latticesystem
 latticeconstants

@@ -3,7 +3,8 @@ using LinearAlgebra: Diagonal, I, norm
 
 import CrystallographyCore: Lattice
 
-export Lattice, isrighthanded, latticesystem, latticeconstants, periodicity, supercell
+export Lattice,
+    isrighthanded, islefthanded, latticesystem, latticeconstants, periodicity, supercell
 
 """
     Lattice(a, b, c, α, β, γ; axis = :a)
@@ -52,6 +53,22 @@ The basis vectors are right-handed if and only if
 function isrighthanded(lattice::Lattice)
     Δ = _det(lattice.data)
     return Δ > zero(Δ)
+end
+
+"""
+    islefthanded(lattice::Lattice)
+
+Test whether the basis vectors are defined to be left-handed.
+
+The basis vectors are left-handed if and only if
+
+```math
+\\mathbf{a} \\cdot (\\mathbf{b} \\times \\mathbf{c}) < 0.
+```
+"""
+function islefthanded(lattice::Lattice)
+    Δ = _det(lattice.data)
+    return Δ < zero(Δ)
 end
 
 """
