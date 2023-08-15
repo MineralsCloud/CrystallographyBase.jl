@@ -1,10 +1,13 @@
+using CrystallographyCore
 using CrystallographyBase
 using Documenter
 
+# See https://stackoverflow.com/questions/70137119/how-to-include-the-docstring-for-a-function-from-another-package-in-my-julia-doc
+DocMeta.setdocmeta!(CrystallographyCore, :DocTestSetup, :(using CrystallographyCore); recursive=true)
 DocMeta.setdocmeta!(CrystallographyBase, :DocTestSetup, :(using CrystallographyBase); recursive=true)
 
 makedocs(;
-    modules=[CrystallographyBase],
+    modules=[CrystallographyCore, CrystallographyBase],
     authors="singularitti <singularitti@outlook.com> and contributors",
     repo="https://github.com/MineralsCloud/CrystallographyBase.jl/blob/{commit}{path}#{line}",
     sitename="CrystallographyBase.jl",
