@@ -1,20 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · CrystallographyBase.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://MineralsCloud.github.io/CrystallographyBase.jl/man/examples/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CrystallographyBase.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation Guide</a></li><li><a class="tocitem" href="../definitions/">Definitions and conventions</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Creating-a-Cell"><span>Creating a <code>Cell</code></span></a></li><li><a class="tocitem" href="#Reciprocal-space"><span>Reciprocal space</span></a></li><li><a class="tocitem" href="#Supercell-generation"><span>Supercell generation</span></a></li></ul></li><li><a class="tocitem" href="../troubleshooting/">Troubleshooting</a></li></ul></li><li><span class="tocitem">Reference</span><ul><li><a class="tocitem" href="../../lib/public/">Public API</a></li></ul></li><li><span class="tocitem">Developer Docs</span><ul><li><a class="tocitem" href="../../developers/contributing/">Contributing</a></li><li><a class="tocitem" href="../../developers/style-guide/">Style Guide</a></li><li><a class="tocitem" href="../../developers/design-principles/">Design Principles</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/MineralsCloud/CrystallographyBase.jl/blob/main/docs/src/man/examples.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><ul><li><a href="#Examples">Examples</a></li><li class="no-marker"><ul><li><a href="#Creating-a-Cell">Creating a <code>Cell</code></a></li><li><a href="#Reciprocal-space">Reciprocal space</a></li><li><a href="#Supercell-generation">Supercell generation</a></li></ul></li></ul><h2 id="Creating-a-Cell"><a class="docs-heading-anchor" href="#Creating-a-Cell">Creating a <code>Cell</code></a><a id="Creating-a-Cell-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-Cell" title="Permalink"></a></h2><p>To create a <code>Cell</code>, we first need to create a <code>Lattice</code>. There are multiple ways of doing it. For example, if we know the six lattice constants, we can do</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; using CrystallographyBase, Unitful, UnitfulAtomic</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; lattice₁ = Lattice(4u&quot;nm&quot;, 180u&quot;bohr&quot;, 3u&quot;angstrom&quot;, 90, 90, 90)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: MethodError: Lattice{Unitful.Quantity{Float64, 𝐋, Unitful.FreeUnits{(m,), 𝐋, nothing}}}(::StaticArraysCore.MMatrix{3, 3, Unitful.Quantity{Float64, 𝐋, Unitful.FreeUnits{(m,), 𝐋, nothing}}, 9}) is ambiguous.
-
-Candidates:
-  (::Type{SA})(sa::StaticArraysCore.StaticArray) where SA&lt;:StaticArraysCore.StaticArray
-    @ StaticArrays ~/.julia/packages/StaticArrays/9KYrc/src/convert.jl:170
-  (T::Type{&lt;:StaticArraysCore.StaticArray})(a::AbstractArray)
-    @ StaticArrays ~/.julia/packages/StaticArrays/9KYrc/src/convert.jl:174
-  (var&quot;#ctor-self#&quot;::Type{Lattice{T}} where T)(data)
-    @ CrystallographyCore ~/.julia/packages/CrystallographyCore/4OLWR/src/lattice.jl:12
-
-Possible fix, define
-  Lattice{T}(::StaticArraysCore.StaticArray) where T</code></pre><p>Or, equivalently,</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; lattice₁ == Lattice([
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Examples · CrystallographyBase.jl</title><script data-outdated-warner src="../../assets/warner.js"></script><link rel="canonical" href="https://MineralsCloud.github.io/CrystallographyBase.jl/man/examples/"/><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.045/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.24/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">CrystallographyBase.jl</a></span></div><form class="docs-search" action="../../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation Guide</a></li><li><a class="tocitem" href="../definitions/">Definitions and conventions</a></li><li class="is-active"><a class="tocitem" href>Examples</a><ul class="internal"><li><a class="tocitem" href="#Creating-a-Cell"><span>Creating a <code>Cell</code></span></a></li><li><a class="tocitem" href="#Reciprocal-space"><span>Reciprocal space</span></a></li><li><a class="tocitem" href="#Supercell-generation"><span>Supercell generation</span></a></li></ul></li><li><a class="tocitem" href="../troubleshooting/">Troubleshooting</a></li></ul></li><li><span class="tocitem">Reference</span><ul><li><a class="tocitem" href="../../lib/public/">Public API</a></li></ul></li><li><span class="tocitem">Developer Docs</span><ul><li><a class="tocitem" href="../../developers/contributing/">Contributing</a></li><li><a class="tocitem" href="../../developers/style-guide/">Style Guide</a></li><li><a class="tocitem" href="../../developers/design-principles/">Design Principles</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/MineralsCloud/CrystallographyBase.jl/blob/main/docs/src/man/examples.md#" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Examples"><a class="docs-heading-anchor" href="#Examples">Examples</a><a id="Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Examples" title="Permalink"></a></h1><ul><li><a href="#Examples">Examples</a></li><li class="no-marker"><ul><li><a href="#Creating-a-Cell">Creating a <code>Cell</code></a></li><li><a href="#Reciprocal-space">Reciprocal space</a></li><li><a href="#Supercell-generation">Supercell generation</a></li></ul></li></ul><h2 id="Creating-a-Cell"><a class="docs-heading-anchor" href="#Creating-a-Cell">Creating a <code>Cell</code></a><a id="Creating-a-Cell-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-a-Cell" title="Permalink"></a></h2><p>To create a <code>Cell</code>, we first need to create a <code>Lattice</code>. There are multiple ways of doing it. For example, if we know the six lattice constants, we can do</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; using CrystallographyBase, Unitful, UnitfulAtomic</code><code class="nohighlight hljs ansi" style="display:block;"></code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; lattice₁ = Lattice(4u&quot;nm&quot;, 180u&quot;bohr&quot;, 3u&quot;angstrom&quot;, 90, 90, 90)</code><code class="nohighlight hljs ansi" style="display:block;">3×3 Lattice{Unitful.Quantity{Float64, 𝐋, Unitful.FreeUnits{(m,), 𝐋, nothing}}} with indices SOneTo(3)×SOneTo(3)
+ 4.0e-9 m  0.0 m  0.0 m
+ 0.0 m  9.525189796254e-9 m  0.0 m
+ 0.0 m  0.0 m  3.0e-10 m</code></pre><p>Or, equivalently,</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; lattice₁ == Lattice([
            4u&quot;nm&quot; 0u&quot;m&quot; 0.0u&quot;cm&quot;
            0u&quot;cm&quot; 180.0u&quot;bohr&quot; 0u&quot;m&quot;
            0u&quot;bohr&quot; 0u&quot;nm&quot; (3//1)*u&quot;angstrom&quot;
-       ])</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: `lattice₁` not defined</code></pre><p>Then we can add atoms and their positions (in crystal coordinates):</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; lattice₂ = [
+       ])</code><code class="nohighlight hljs ansi" style="display:block;">true</code></pre><p>Then we can add atoms and their positions (in crystal coordinates):</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; lattice₂ = [
            -3.0179389205999998 -3.0179389205999998 0.0000000000000000
            -5.2272235447000002 5.2272235447000002 0.0000000000000000
            0.0000000000000000 0.0000000000000000 -9.7736219469000005
@@ -25,15 +17,146 @@ Possible fix, define
  [0.6666666666666666, 0.3333333333333333, 0.25]
  [0.3333333333333333, 0.6666666666666666, 0.75]</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; atoms = [1, 1]</code><code class="nohighlight hljs ansi" style="display:block;">2-element Vector{Int64}:
  1
- 1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cell = Cell(lattice₂, positions, atoms)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: MethodError: Lattice{Float64}(::StaticArraysCore.MMatrix{3, 3, Float64, 9}) is ambiguous.
+ 1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; cell = Cell(lattice₂, positions, atoms)</code><code class="nohighlight hljs ansi" style="display:block;">Cell{Float64, Float64, Int64}
+ lattice:
+   -3.0179389206  -3.0179389206  0.0
+   -5.2272235447  5.2272235447  0.0
+   0.0  0.0  -9.7736219469
+ 2 atomic positions:
+   0.6666666666666666  0.3333333333333333  0.25
+   0.3333333333333333  0.6666666666666666  0.75
+ 2 atoms:
+   1  1</code></pre><h2 id="Reciprocal-space"><a class="docs-heading-anchor" href="#Reciprocal-space">Reciprocal space</a><a id="Reciprocal-space-1"></a><a class="docs-heading-anchor-permalink" href="#Reciprocal-space" title="Permalink"></a></h2><p>To get the reciprocal lattice, we run <code>reciprocal</code>:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; reciprocal(lattice₁)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: MethodError: ReciprocalLattice{Unitful.Quantity{Float64, 𝐋^-1, Unitful.FreeUnits{(m^-1,), 𝐋^-1, nothing}}}(::StaticArraysCore.MMatrix{3, 3, Unitful.Quantity{Float64, 𝐋^-1, Unitful.FreeUnits{(m^-1,), 𝐋^-1, nothing}}, 9}) is ambiguous.
 
 Candidates:
   (::Type{SA})(sa::StaticArraysCore.StaticArray) where SA&lt;:StaticArraysCore.StaticArray
     @ StaticArrays ~/.julia/packages/StaticArrays/9KYrc/src/convert.jl:170
   (T::Type{&lt;:StaticArraysCore.StaticArray})(a::AbstractArray)
     @ StaticArrays ~/.julia/packages/StaticArrays/9KYrc/src/convert.jl:174
-  (var&quot;#ctor-self#&quot;::Type{Lattice{T}} where T)(data)
-    @ CrystallographyCore ~/.julia/packages/CrystallographyCore/4OLWR/src/lattice.jl:12
+  (var&quot;#ctor-self#&quot;::Type{ReciprocalLattice{T}} where T)(data)
+    @ CrystallographyBase ~/work/CrystallographyBase.jl/CrystallographyBase.jl/src/reciprocal.jl:17
 
 Possible fix, define
-  Lattice{T}(::StaticArraysCore.StaticArray) where T</code></pre><h2 id="Reciprocal-space"><a class="docs-heading-anchor" href="#Reciprocal-space">Reciprocal space</a><a id="Reciprocal-space-1"></a><a class="docs-heading-anchor-permalink" href="#Reciprocal-space" title="Permalink"></a></h2><p>To get the reciprocal lattice, we run <code>reciprocal</code>:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; reciprocal(lattice₁)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: `lattice₁` not defined</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Never use <code>ReciprocalLattice</code> directly unless you know what you are doing!</p></div></div><h2 id="Supercell-generation"><a class="docs-heading-anchor" href="#Supercell-generation">Supercell generation</a><a id="Supercell-generation-1"></a><a class="docs-heading-anchor-permalink" href="#Supercell-generation" title="Permalink"></a></h2><p>We can specify the replication factors in each direction in the following ways:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(lattice₁, [2, 3, 4])</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: `lattice₁` not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(lattice₁, 3)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: `lattice₁` not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(cell, [2, 3, 4])</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: `cell` not defined</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(cell, 3)</code><code class="nohighlight hljs ansi" style="display:block;">ERROR: UndefVarError: `cell` not defined</code></pre><p>If only one integer is provided, it will be used in all three spatial directions.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../definitions/">« Definitions and conventions</a><a class="docs-footer-nextpage" href="../troubleshooting/">Troubleshooting »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Friday 18 August 2023 02:16">Friday 18 August 2023</span>. Using Julia version 1.9.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  ReciprocalLattice{T}(::StaticArraysCore.StaticArray) where T</code></pre><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>Never use <code>ReciprocalLattice</code> directly unless you know what you are doing!</p></div></div><h2 id="Supercell-generation"><a class="docs-heading-anchor" href="#Supercell-generation">Supercell generation</a><a id="Supercell-generation-1"></a><a class="docs-heading-anchor-permalink" href="#Supercell-generation" title="Permalink"></a></h2><p>We can specify the replication factors in each direction in the following ways:</p><pre><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(lattice₁, [2, 3, 4])</code><code class="nohighlight hljs ansi" style="display:block;">3×3 Lattice{Unitful.Quantity{Float64, 𝐋, Unitful.FreeUnits{(m,), 𝐋, nothing}}} with indices SOneTo(3)×SOneTo(3)
+ 8.0e-9 m  0.0 m  0.0 m
+ 0.0 m  2.8575569388762e-8 m  0.0 m
+ 0.0 m  0.0 m  1.2e-9 m</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(lattice₁, 3)</code><code class="nohighlight hljs ansi" style="display:block;">3×3 Lattice{Unitful.Quantity{Float64, 𝐋, Unitful.FreeUnits{(m,), 𝐋, nothing}}} with indices SOneTo(3)×SOneTo(3)
+ 1.2000000000000002e-8 m  0.0 m  0.0 m
+ 0.0 m  2.8575569388762e-8 m  0.0 m
+ 0.0 m  0.0 m  9.0e-10 m</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(cell, [2, 3, 4])</code><code class="nohighlight hljs ansi" style="display:block;">Cell{Float64, Float64, Int64}
+ lattice:
+   -6.0358778412  -9.0538167618  0.0
+   -10.4544470894  15.681670634100001  0.0
+   0.0  0.0  -39.0944877876
+ 48 atomic positions:
+   0.3333333333333333  0.1111111111111111  0.0625
+   0.8333333333333333  0.1111111111111111  0.0625
+   0.3333333333333333  0.4444444444444444  0.0625
+   0.8333333333333333  0.4444444444444444  0.0625
+   0.3333333333333333  0.7777777777777778  0.0625
+   0.8333333333333333  0.7777777777777778  0.0625
+   0.3333333333333333  0.1111111111111111  0.3125
+   0.8333333333333333  0.1111111111111111  0.3125
+   0.3333333333333333  0.4444444444444444  0.3125
+   0.8333333333333333  0.4444444444444444  0.3125
+   0.3333333333333333  0.7777777777777778  0.3125
+   0.8333333333333333  0.7777777777777778  0.3125
+   0.3333333333333333  0.1111111111111111  0.5625
+   0.8333333333333333  0.1111111111111111  0.5625
+   0.3333333333333333  0.4444444444444444  0.5625
+   0.8333333333333333  0.4444444444444444  0.5625
+   0.3333333333333333  0.7777777777777778  0.5625
+   0.8333333333333333  0.7777777777777778  0.5625
+   0.3333333333333333  0.1111111111111111  0.8125
+   0.8333333333333333  0.1111111111111111  0.8125
+   0.3333333333333333  0.4444444444444444  0.8125
+   0.8333333333333333  0.4444444444444444  0.8125
+   0.3333333333333333  0.7777777777777778  0.8125
+   0.8333333333333333  0.7777777777777778  0.8125
+   0.16666666666666666  0.2222222222222222  0.1875
+   0.6666666666666666  0.2222222222222222  0.1875
+   0.16666666666666666  0.5555555555555555  0.1875
+   0.6666666666666666  0.5555555555555555  0.1875
+   0.16666666666666666  0.8888888888888888  0.1875
+   0.6666666666666666  0.8888888888888888  0.1875
+   0.16666666666666666  0.2222222222222222  0.4375
+   0.6666666666666666  0.2222222222222222  0.4375
+   0.16666666666666666  0.5555555555555555  0.4375
+   0.6666666666666666  0.5555555555555555  0.4375
+   0.16666666666666666  0.8888888888888888  0.4375
+   0.6666666666666666  0.8888888888888888  0.4375
+   0.16666666666666666  0.2222222222222222  0.6875
+   0.6666666666666666  0.2222222222222222  0.6875
+   0.16666666666666666  0.5555555555555555  0.6875
+   0.6666666666666666  0.5555555555555555  0.6875
+   0.16666666666666666  0.8888888888888888  0.6875
+   0.6666666666666666  0.8888888888888888  0.6875
+   0.16666666666666666  0.2222222222222222  0.9375
+   0.6666666666666666  0.2222222222222222  0.9375
+   0.16666666666666666  0.5555555555555555  0.9375
+   0.6666666666666666  0.5555555555555555  0.9375
+   0.16666666666666666  0.8888888888888888  0.9375
+   0.6666666666666666  0.8888888888888888  0.9375
+ 48 atoms:
+   1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1</code><br/><code class="language-julia-repl hljs" style="display:block;">julia&gt; supercell(cell, 3)</code><code class="nohighlight hljs ansi" style="display:block;">Cell{Float64, Float64, Int64}
+ lattice:
+   -9.0538167618  -9.0538167618  0.0
+   -15.681670634100001  15.681670634100001  0.0
+   0.0  0.0  -29.3208658407
+ 54 atomic positions:
+   0.2222222222222222  0.1111111111111111  0.08333333333333333
+   0.5555555555555555  0.1111111111111111  0.08333333333333333
+   0.8888888888888888  0.1111111111111111  0.08333333333333333
+   0.2222222222222222  0.4444444444444444  0.08333333333333333
+   0.5555555555555555  0.4444444444444444  0.08333333333333333
+   0.8888888888888888  0.4444444444444444  0.08333333333333333
+   0.2222222222222222  0.7777777777777778  0.08333333333333333
+   0.5555555555555555  0.7777777777777778  0.08333333333333333
+   0.8888888888888888  0.7777777777777778  0.08333333333333333
+   0.2222222222222222  0.1111111111111111  0.4166666666666667
+   0.5555555555555555  0.1111111111111111  0.4166666666666667
+   0.8888888888888888  0.1111111111111111  0.4166666666666667
+   0.2222222222222222  0.4444444444444444  0.4166666666666667
+   0.5555555555555555  0.4444444444444444  0.4166666666666667
+   0.8888888888888888  0.4444444444444444  0.4166666666666667
+   0.2222222222222222  0.7777777777777778  0.4166666666666667
+   0.5555555555555555  0.7777777777777778  0.4166666666666667
+   0.8888888888888888  0.7777777777777778  0.4166666666666667
+   0.2222222222222222  0.1111111111111111  0.75
+   0.5555555555555555  0.1111111111111111  0.75
+   0.8888888888888888  0.1111111111111111  0.75
+   0.2222222222222222  0.4444444444444444  0.75
+   0.5555555555555555  0.4444444444444444  0.75
+   0.8888888888888888  0.4444444444444444  0.75
+   0.2222222222222222  0.7777777777777778  0.75
+   0.5555555555555555  0.7777777777777778  0.75
+   0.8888888888888888  0.7777777777777778  0.75
+   0.1111111111111111  0.2222222222222222  0.25
+   0.4444444444444444  0.2222222222222222  0.25
+   0.7777777777777778  0.2222222222222222  0.25
+   0.1111111111111111  0.5555555555555555  0.25
+   0.4444444444444444  0.5555555555555555  0.25
+   0.7777777777777778  0.5555555555555555  0.25
+   0.1111111111111111  0.8888888888888888  0.25
+   0.4444444444444444  0.8888888888888888  0.25
+   0.7777777777777778  0.8888888888888888  0.25
+   0.1111111111111111  0.2222222222222222  0.5833333333333334
+   0.4444444444444444  0.2222222222222222  0.5833333333333334
+   0.7777777777777778  0.2222222222222222  0.5833333333333334
+   0.1111111111111111  0.5555555555555555  0.5833333333333334
+   0.4444444444444444  0.5555555555555555  0.5833333333333334
+   0.7777777777777778  0.5555555555555555  0.5833333333333334
+   0.1111111111111111  0.8888888888888888  0.5833333333333334
+   0.4444444444444444  0.8888888888888888  0.5833333333333334
+   0.7777777777777778  0.8888888888888888  0.5833333333333334
+   0.1111111111111111  0.2222222222222222  0.9166666666666666
+   0.4444444444444444  0.2222222222222222  0.9166666666666666
+   0.7777777777777778  0.2222222222222222  0.9166666666666666
+   0.1111111111111111  0.5555555555555555  0.9166666666666666
+   0.4444444444444444  0.5555555555555555  0.9166666666666666
+   0.7777777777777778  0.5555555555555555  0.9166666666666666
+   0.1111111111111111  0.8888888888888888  0.9166666666666666
+   0.4444444444444444  0.8888888888888888  0.9166666666666666
+   0.7777777777777778  0.8888888888888888  0.9166666666666666
+ 54 atoms:
+   1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1</code></pre><p>If only one integer is provided, it will be used in all three spatial directions.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../definitions/">« Definitions and conventions</a><a class="docs-footer-nextpage" href="../troubleshooting/">Troubleshooting »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.25 on <span class="colophon-date" title="Friday 18 August 2023 04:43">Friday 18 August 2023</span>. Using Julia version 1.9.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
