@@ -42,7 +42,7 @@ end
 function reciprocal(lattice::ReciprocalLattice)
     Ω⁻¹ = _det(lattice.data)  # Cannot use `cellvolume`, it takes the absolute value!
     𝐚⁻¹, 𝐛⁻¹, 𝐜⁻¹ = basisvectors(lattice)
-    return Lattice(inv(Ω⁻¹) * hcat(cross(𝐛⁻¹, 𝐜⁻¹), cross(𝐜⁻¹, 𝐚⁻¹), cross(𝐚⁻¹, 𝐛⁻¹)))
+    return inv(Ω⁻¹) * Lattice(hcat(cross(𝐛⁻¹, 𝐜⁻¹), cross(𝐜⁻¹, 𝐚⁻¹), cross(𝐚⁻¹, 𝐛⁻¹)))
 end
 
 """

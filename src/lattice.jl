@@ -196,7 +196,7 @@ function supercell(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
     end
     # Sometimes the matrix can have negative determinant, see https://gitlab.com/ase/ase/-/issues/938
     @assert abs(_det(repfactors)) >= 1
-    return Lattice(lattice.data * repfactors)
+    return Lattice(lattice.data) * repfactors
 end
 supercell(lattice_or_cell, repfactors::AbstractVector{<:Integer}) =
     supercell(lattice_or_cell, Diagonal(repfactors))
