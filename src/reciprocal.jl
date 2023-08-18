@@ -50,7 +50,9 @@ end
 
 Get the three basis vectors from a `ReciprocalLattice`.
 """
-basisvectors(lattice::ReciprocalLattice) = lattice[1, :], lattice[2, :], lattice[3, :]
+basisvectors(lattice::ReciprocalLattice) = Tuple(eachbasisvector(lattice))
+
+eachbasisvector(lattice::ReciprocalLattice) = eachrow(lattice)
 
 """
     ReciprocalPoint(x, y, z, w)
