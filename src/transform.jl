@@ -1,34 +1,34 @@
-export FractionalFromCartesian,
-    CartesianFromFractional,
-    FractionalToCartesian,
-    CartesianToFractional,
+export ReducedFromCartesian,
+    CartesianFromReduced,
+    ReducedToCartesian,
+    CartesianToReduced,
     StandardizedFromPrimitive,
     PrimitiveFromStandardized,
     PrimitiveToStandardized,
     StandardizedToPrimitive
 
 abstract type ChangeOfBasis{T} <: AbstractMatrix{T} end
-struct CartesianFromFractional{T} <: ChangeOfBasis{T}
+struct CartesianFromReduced{T} <: ChangeOfBasis{T}
     tf::MMatrix{3,3,T,9}
 end
-struct FractionalFromCartesian{T} <: ChangeOfBasis{T}
+struct ReducedFromCartesian{T} <: ChangeOfBasis{T}
     tf::MMatrix{3,3,T,9}
 end
 # This requires the a-vector is parallel to the Cartesian x-axis.
 # See https://en.wikipedia.org/wiki/Fractional_coordinates
 """
-    CartesianFromFractional(lattice::Union{Lattice,ReciprocalLattice})
-    CartesianFromFractional(a, b, c, α, β, γ)
+    CartesianFromReduced(lattice::Union{Lattice,ReciprocalLattice})
+    CartesianFromReduced(a, b, c, α, β, γ)
 
 Get the transformation from fractional coordinates to Cartesian coordinates.
 """
-CartesianFromFractional(lattice::Lattice) = CartesianFromFractional(parent(lattice))
-CartesianFromFractional(lattice::ReciprocalLattice) =
-    CartesianFromFractional(transpose(parent(lattice)))
-function CartesianFromFractional(a, b, c, α, β, γ)
+CartesianFromReduced(lattice::Lattice) = CartesianFromReduced(parent(lattice))
+CartesianFromReduced(lattice::ReciprocalLattice) =
+    CartesianFromReduced(transpose(parent(lattice)))
+function CartesianFromReduced(a, b, c, α, β, γ)
     Ω = cellvolume(a, b, c, α, β, γ)
     b_sinγ, b_cosγ = b .* (sind(γ), cosd(γ))
-    return CartesianFromFractional(
+    return CartesianFromReduced(
         [
             a b_cosγ c*cosd(β)
             0 b_sinγ c*_auxiliary(α, β, γ)
@@ -37,18 +37,18 @@ function CartesianFromFractional(a, b, c, α, β, γ)
     )
 end
 """
-    FractionalFromCartesian(lattice::Union{Lattice,ReciprocalLattice})
-    FractionalFromCartesian(a, b, c, α, β, γ)
+    ReducedFromCartesian(lattice::Union{Lattice,ReciprocalLattice})
+    ReducedFromCartesian(a, b, c, α, β, γ)
 
 Get the transformation from Cartesian coordinates to fractional coordinates.
 """
-FractionalFromCartesian(lattice::Lattice) = FractionalFromCartesian(inv(parent(lattice)))
-FractionalFromCartesian(lattice::ReciprocalLattice) =
-    FractionalFromCartesian(transpose(inv(parent(lattice))))
-function FractionalFromCartesian(a, b, c, α, β, γ)
+ReducedFromCartesian(lattice::Lattice) = ReducedFromCartesian(inv(parent(lattice)))
+ReducedFromCartesian(lattice::ReciprocalLattice) =
+    ReducedFromCartesian(transpose(inv(parent(lattice))))
+function ReducedFromCartesian(a, b, c, α, β, γ)
     Ω = cellvolume(a, b, c, α, β, γ)
     b_sinγ = b * sind(γ)
-    return FractionalFromCartesian(
+    return ReducedFromCartesian(
         [
             1/a -cotd(γ)/a -b * c * _auxiliary(β, α, γ)/Ω
             0 1/b_sinγ -a * c * _auxiliary(α, β, γ)/Ω
@@ -56,20 +56,20 @@ function FractionalFromCartesian(a, b, c, α, β, γ)
         ],
     )
 end
-const FractionalToCartesian = CartesianFromFractional
-const CartesianToFractional = FractionalFromCartesian
+const ReducedToCartesian = CartesianFromReduced
+const CartesianToReduced = ReducedFromCartesian
 
 # This is a helper function and should not be exported!
 _auxiliary(α, β, γ) = (cosd(α) - cosd(β) * cosd(γ)) / sind(γ)
 
-(x::Union{CartesianFromFractional,FractionalFromCartesian})(v) = x.tf * collect(v)
-(x::Union{CartesianFromFractional,FractionalFromCartesian})(p::ReciprocalPoint) =
+(x::Union{CartesianFromReduced,ReducedFromCartesian})(v) = x.tf * collect(v)
+(x::Union{CartesianFromReduced,ReducedFromCartesian})(p::ReciprocalPoint) =
     ReciprocalPoint(x.tf * collect(p.coord), p.weight)
 
-Base.inv(x::FractionalFromCartesian) = CartesianFromFractional(inv(x.tf))
-Base.inv(x::CartesianFromFractional) = FractionalFromCartesian(inv(x.tf))
-Base.:∘(x::CartesianFromFractional, y::FractionalFromCartesian) = ∘(y, x)
-Base.:∘(x::FractionalFromCartesian, y::CartesianFromFractional) =
+Base.inv(x::ReducedFromCartesian) = CartesianFromReduced(inv(x.tf))
+Base.inv(x::CartesianFromReduced) = ReducedFromCartesian(inv(x.tf))
+Base.:∘(x::CartesianFromReduced, y::ReducedFromCartesian) = ∘(y, x)
+Base.:∘(x::ReducedFromCartesian, y::CartesianFromReduced) =
     x.tf * y.tf ≈ I ? identity : error("undefined!")
 
 # Idea from https://spglib.github.io/spglib/definition.html#transformation-to-the-primitive-cell
