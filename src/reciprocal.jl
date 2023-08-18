@@ -1,4 +1,5 @@
 using LinearAlgebra: cross
+using StaticArrays: Size
 
 import CrystallographyCore: basisvectors
 
@@ -98,3 +99,51 @@ coordinates(arr::AbstractArray{<:ReciprocalPoint}) = map(x -> x.coord, arr)
 Get the weights of an array of `ReciprocalPoint`s.
 """
 weights(arr::AbstractArray{<:ReciprocalPoint}) = map(x -> x.weight, arr)
+
+Base.parent(lattice::ReciprocalLattice) = lattice.data
+
+Base.getindex(lattice::ReciprocalLattice, i::Int) = getindex(parent(lattice), i)
+
+Base.setindex!(lattice::ReciprocalLattice, v, i::Int) = setindex!(parent(lattice), v, i)
+
+# Customizing broadcasting
+# See https://github.com/JuliaArrays/StaticArraysCore.jl/blob/v1.4.2/src/StaticArraysCore.jl#L397-L398
+# and https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/structuredbroadcast.jl#L7-L14
+struct ReciprocalLatticeStyle <: Broadcast.AbstractArrayStyle{2} end
+ReciprocalLatticeStyle(::Val{2}) = ReciprocalLatticeStyle()
+ReciprocalLatticeStyle(::Val{N}) where {N} = Broadcast.DefaultArrayStyle{N}()
+
+# Base.BroadcastStyle(::Type{<:ReciprocalLattice}) = ReciprocalLatticeStyle()
+
+Base.similar(::Broadcast.Broadcasted{ReciprocalLatticeStyle}, ::Type{T}) where {T} =
+    similar(Lattice{T})
+# Override https://github.com/JuliaArrays/StaticArrays.jl/blob/v1.6.2/src/abstractarray.jl#L129
+function Base.similar(lattice::ReciprocalLattice, ::Type{T}, _size::Size) where {T}
+    if _size == size(lattice)
+        ReciprocalLattice{T}(undef)
+    else
+        return similar(Array(lattice), T, _size)
+    end
+end
+# Override https://github.com/JuliaLang/julia/blob/v1.10.0-beta2/base/abstractarray.jl#L839
+function Base.similar(lattice::ReciprocalLattice, ::Type{T}, dims::Dims) where {T}
+    if dims == size(lattice)
+        ReciprocalLattice{T}(undef)
+    else
+        return similar(Array(lattice), T, dims)
+    end
+end
+function Base.similar(::Type{<:ReciprocalLattice}, ::Type{T}, s::Size) where {T}
+    if s == (3, 3)
+        ReciprocalLattice{T}(undef)
+    else
+        return Array{T}(undef, Tuple(s))
+    end
+end
+function Base.similar(::Type{<:ReciprocalLattice}, ::Type{T}, dim, dims...) where {T}
+    if (dim, dims...) == (3, 3)
+        ReciprocalLattice{T}(undef)
+    else
+        return Array{T}(undef, dim, dims...)
+    end
+end
