@@ -17,8 +17,8 @@ end
 # This requires the a-vector is parallel to the Cartesian x-axis.
 # See https://en.wikipedia.org/wiki/Fractional_coordinates
 """
-    CartesianFromFractional(lattice::Union{Lattice,ReciprocalLattice})
-    CartesianFromFractional(a, b, c, α, β, γ)
+    CartesianFromReduced(lattice::Union{Lattice,ReciprocalLattice})
+    CartesianFromReduced(a, b, c, α, β, γ)
 
 Get the transformation from fractional coordinates to Cartesian coordinates.
 """
@@ -37,8 +37,8 @@ function CartesianFromReduced(a, b, c, α, β, γ)
     )
 end
 """
-    FractionalFromCartesian(lattice::Union{Lattice,ReciprocalLattice})
-    FractionalFromCartesian(a, b, c, α, β, γ)
+    ReducedFromCartesian(lattice::Union{Lattice,ReciprocalLattice})
+    ReducedFromCartesian(a, b, c, α, β, γ)
 
 Get the transformation from Cartesian coordinates to fractional coordinates.
 """
