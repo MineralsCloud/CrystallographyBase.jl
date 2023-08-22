@@ -1,6 +1,6 @@
-module PeriodicTableExt
+module MendeleevExt
 
-using PeriodicTable: Element, elements
+using Mendeleev: Element, elements
 
 import CrystallographyBase: atomicmass
 

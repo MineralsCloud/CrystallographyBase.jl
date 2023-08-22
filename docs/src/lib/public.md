@@ -64,4 +64,5 @@ StandardizedFromPrimitive
 ```@docs
 cellvolume
 crystaldensity
+atomicmass
 ```
