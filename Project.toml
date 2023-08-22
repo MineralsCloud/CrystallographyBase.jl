@@ -12,10 +12,12 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [weakdeps]
 Brillouin = "23470ee3-d0df-4052-8b1a-8cbd6363e7f0"
+PeriodicTable = "7b2266bf-644c-5ea3-82d8-af4bbd25a884"
 Spglib = "f761d5c5-86db-4880-b97f-9680a7cccfb5"
 
 [extensions]
 BrillouinSpglibExt = ["Brillouin", "Spglib"]
+PeriodicTableExt = "PeriodicTable"
 
 [compat]
 AnonymousEnums = "0.1"
