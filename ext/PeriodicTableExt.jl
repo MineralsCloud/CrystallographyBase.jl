@@ -1,6 +1,5 @@
 module PeriodicTableExt
 
-using CrystallographyBase
 using PeriodicTable: Element, elements
 
 import CrystallographyBase: atomicmass
