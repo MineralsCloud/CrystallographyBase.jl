@@ -1,9 +1,9 @@
 module PeriodicTableExt
 
-using CrystallographBase
+using CrystallographyBase
 using PeriodicTable: Element, elements
 
-import CrystallographBase: atomicmass
+import CrystallographyBase: atomicmass
 
 atomicmass(element::Element) = element.atomic_mass
 atomicmass(i::Union{AbstractString,Integer,Symbol}) = elements[i].atomic_mass
