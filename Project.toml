@@ -17,6 +17,7 @@ Spglib = "f761d5c5-86db-4880-b97f-9680a7cccfb5"
 
 [extensions]
 BrillouinSpglibExt = ["Brillouin", "Spglib"]
+MendeleevExt = "Mendeleev"
 PeriodicTableExt = "PeriodicTable"
 
 [compat]
