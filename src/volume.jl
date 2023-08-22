@@ -1,5 +1,3 @@
-using Mendeleev: Element, elements
-
 export cellvolume, crystaldensity, atomicmass
 
 """
@@ -40,5 +38,4 @@ function crystaldensity(lattice::Lattice, atoms)
 end
 crystaldensity(cell::Cell) = crystaldensity(Lattice(cell), cell.atoms)
 
-atomicmass(element::Element) = element.atomic_mass
-atomicmass(i::Union{AbstractString,Integer,Symbol}) = elements[i].atomic_mass
+function atomicmass end
