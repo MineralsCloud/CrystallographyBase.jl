@@ -63,8 +63,6 @@ const CartesianToReduced = ReducedFromCartesian
 _auxiliary(α, β, γ) = (cosd(α) - cosd(β) * cosd(γ)) / sind(γ)
 
 (x::Union{CartesianFromReduced,ReducedFromCartesian})(v) = x.tf * collect(v)
-(x::Union{CartesianFromReduced,ReducedFromCartesian})(p::ReciprocalPoint) =
-    ReciprocalPoint(x.tf * collect(p.coord), p.weight)
 
 Base.inv(x::ReducedFromCartesian) = CartesianFromReduced(inv(x.tf))
 Base.inv(x::CartesianFromReduced) = ReducedFromCartesian(inv(x.tf))
