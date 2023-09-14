@@ -3,8 +3,7 @@ using StaticArrays: Size
 
 import CrystallographyCore: basisvectors
 
-export ReciprocalPoint,
-    ReciprocalLattice, MonkhorstPackGrid, reciprocal, coordinates, weights, basisvectors
+export ReciprocalLattice, MonkhorstPackGrid, reciprocal, basisvectors
 
 """
     ReciprocalLattice(data::MMatrix)
@@ -74,20 +73,6 @@ struct MonkhorstPackGrid
         return new(mesh, is_shift)
     end
 end
-
-"""
-    coordinates(arr::AbstractArray{<:ReciprocalPoint})
-
-Get the coordinates of an array of `ReciprocalPoint`s.
-"""
-coordinates(arr::AbstractArray{<:ReciprocalPoint}) = map(x -> x.coord, arr)
-
-"""
-    weights(arr::AbstractArray{<:ReciprocalPoint})
-
-Get the weights of an array of `ReciprocalPoint`s.
-"""
-weights(arr::AbstractArray{<:ReciprocalPoint}) = map(x -> x.weight, arr)
 
 Base.parent(lattice::ReciprocalLattice) = lattice.data
 
