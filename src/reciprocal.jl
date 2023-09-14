@@ -49,7 +49,7 @@ Get the three basis vectors from a `ReciprocalLattice`.
 """
 basisvectors(lattice::ReciprocalLattice) = Tuple(eachbasisvector(lattice))
 
-eachbasisvector(lattice::ReciprocalLattice) = eachrow(lattice)
+eachbasisvector(lattice::ReciprocalLattice) = eachcol(lattice)
 
 """
     MonkhorstPackGrid(mesh, is_shift)
