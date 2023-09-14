@@ -34,9 +34,7 @@ Get the reciprocal of a `Lattice` or a `ReciprocalLattice`.
 function reciprocal(lattice::Lattice)
     Ω = _det(lattice.data)  # Cannot use `cellvolume`, it takes the absolute value!
     𝐚, 𝐛, 𝐜 = basisvectors(lattice)
-    return ReciprocalLattice(
-        inv(Ω) * transpose(hcat(cross(𝐛, 𝐜), cross(𝐜, 𝐚), cross(𝐚, 𝐛)))
-    )
+    return inv(Ω) * ReciprocalLattice(hcat(cross(𝐛, 𝐜), cross(𝐜, 𝐚), cross(𝐚, 𝐛)))
 end
 function reciprocal(lattice::ReciprocalLattice)
     Ω⁻¹ = _det(lattice.data)  # Cannot use `cellvolume`, it takes the absolute value!
