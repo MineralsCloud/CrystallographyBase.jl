@@ -3,8 +3,7 @@ using StaticArrays: Size
 
 import CrystallographyCore: basisvectors
 
-export ReciprocalPoint,
-    ReciprocalLattice, MonkhorstPackGrid, reciprocal, coordinates, weights, basisvectors
+export ReciprocalLattice, MonkhorstPackGrid, reciprocal, basisvectors
 
 """
     ReciprocalLattice(data::MMatrix)
@@ -55,19 +54,6 @@ basisvectors(lattice::ReciprocalLattice) = Tuple(eachbasisvector(lattice))
 eachbasisvector(lattice::ReciprocalLattice) = eachrow(lattice)
 
 """
-    ReciprocalPoint(x, y, z, w)
-
-Represent a special point of the 3D Brillouin zone. Each of them has a weight `w`.
-"""
-struct ReciprocalPoint{T}
-    coord::SVector{3,T}
-    weight::Float64
-end
-ReciprocalPoint(coord::AbstractVector{T}, weight) where {T} =
-    ReciprocalPoint{T}(SVector{3}(coord), weight)
-ReciprocalPoint(x, y, z, w) = ReciprocalPoint(SVector(x, y, z), w)
-
-"""
     MonkhorstPackGrid(mesh, is_shift)
 
 Represent the Monkhorst--Pack grid.
@@ -87,20 +73,6 @@ struct MonkhorstPackGrid
         return new(mesh, is_shift)
     end
 end
-
-"""
-    coordinates(arr::AbstractArray{<:ReciprocalPoint})
-
-Get the coordinates of an array of `ReciprocalPoint`s.
-"""
-coordinates(arr::AbstractArray{<:ReciprocalPoint}) = map(x -> x.coord, arr)
-
-"""
-    weights(arr::AbstractArray{<:ReciprocalPoint})
-
-Get the weights of an array of `ReciprocalPoint`s.
-"""
-weights(arr::AbstractArray{<:ReciprocalPoint}) = map(x -> x.weight, arr)
 
 Base.parent(lattice::ReciprocalLattice) = lattice.data
 

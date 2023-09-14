@@ -35,12 +35,9 @@ eachatom
 Note that we take ``2\pi`` as ``1``, not the solid-state physics convention.
 
 ```@docs
-ReciprocalPoint
 ReciprocalLattice
 MonkhorstPackGrid
 reciprocal
-coordinates
-weights
 ```
 
 ### Metric tensor
