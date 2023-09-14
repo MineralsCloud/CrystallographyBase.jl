@@ -34,13 +34,11 @@ Get the reciprocal of a `Lattice` or a `ReciprocalLattice`.
 function reciprocal(lattice::Lattice)
     Ω = _det(lattice.data)  # Cannot use `cellvolume`, it takes the absolute value!
     𝐚, 𝐛, 𝐜 = basisvectors(lattice)
-    return ReciprocalLattice(
-        inv(Ω) * transpose(hcat(cross(𝐛, 𝐜), cross(𝐜, 𝐚), cross(𝐚, 𝐛)))
-    )
+    return inv(Ω) * ReciprocalLattice(hcat(cross(𝐛, 𝐜), cross(𝐜, 𝐚), cross(𝐚, 𝐛)))
 end
 function reciprocal(lattice::ReciprocalLattice)
     Ω⁻¹ = _det(lattice.data)  # Cannot use `cellvolume`, it takes the absolute value!
-    𝐚⁻¹, 𝐛⁻¹, 𝐜⁻¹ = basisvectors(lattice)
+    𝐚⁻¹, 𝐛⁻¹, 𝐜⁻¹ = eachbasisvector(lattice)
     return inv(Ω⁻¹) * Lattice(hcat(cross(𝐛⁻¹, 𝐜⁻¹), cross(𝐜⁻¹, 𝐚⁻¹), cross(𝐚⁻¹, 𝐛⁻¹)))
 end
 
@@ -51,7 +49,7 @@ Get the three basis vectors from a `ReciprocalLattice`.
 """
 basisvectors(lattice::ReciprocalLattice) = Tuple(eachbasisvector(lattice))
 
-eachbasisvector(lattice::ReciprocalLattice) = eachrow(lattice)
+eachbasisvector(lattice::ReciprocalLattice) = eachcol(lattice)
 
 """
     MonkhorstPackGrid(mesh, is_shift)
