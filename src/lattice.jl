@@ -1,5 +1,5 @@
 using CrystallographyCore: AbstractLattice
-using LinearAlgebra: Diagonal, I, norm
+using LinearAlgebra: Diagonal, norm
 
 import CrystallographyCore: Lattice
 
@@ -195,10 +195,11 @@ function supercell(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
     end
     # Sometimes the matrix can have negative determinant, see https://gitlab.com/ase/ase/-/issues/938
     @assert abs(_det(repfactors)) >= 1
-    return Lattice(lattice.data) * repfactors
+    # See https://github.com/JuliaLang/julia/issues/51354
+    return Lattice(parent(lattice) * repfactors)
 end
 supercell(lattice_or_cell, repfactors::AbstractVector{<:Integer}) =
     supercell(lattice_or_cell, Diagonal(repfactors))
 # See https://stackoverflow.com/a/57270841
 supercell(lattice_or_cell, repfactor::Integer) =
-    supercell(lattice_or_cell, Matrix(repfactor * I, 3, 3))
+    supercell(lattice_or_cell, fill(repfactor, 3))
