@@ -21,7 +21,7 @@ end
 Generate a `MetricTensor` from a `Lattice`.
 """
 function MetricTensor(lattice::Lattice)
-    data = lattice.data
+    data = parent(lattice)
     return MetricTensor(transpose(data) * data)
 end
 """
