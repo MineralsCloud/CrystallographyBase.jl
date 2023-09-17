@@ -311,14 +311,12 @@ end
     new_cell = supercell(cell, [3, 6, 2])
     @test natoms(new_cell) == natoms(cell) * 3 * 6 * 2
     @test cellvolume(new_cell) ≈ cellvolume(cell) * 3 * 6 * 2
-    @test reciprocal(new_cell.lattice) ≈ ReciprocalLattice(  # Compared with Xtals.jl results
-        MMatrix{3,3}(
-            [
-                0.028687901451320934 -1.7566273343307443e-18 0.005522861283328621
-                0.0 0.02993994047939833 -2.219893391258545e-18
-                0.0 0.0 0.022204736097296805
-            ],
-        ),
+    @test reciprocal(Lattice(new_cell)) ≈ ReciprocalLattice(  # Compared with Xtals.jl results
+        [
+            0.028687901451320934 0.0 0.0
+            -1.7566273343307443e-18 0.02993994047939833 0.0
+            0.005522861283328621 -2.219893391258545e-18 0.022204736097296805
+        ],
     )
     order = sortperm(new_cell.atoms)
     @test new_cell.atoms[order] == [

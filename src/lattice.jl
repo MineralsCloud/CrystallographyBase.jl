@@ -50,7 +50,7 @@ The basis vectors are right-handed if and only if
 ```
 """
 function isrighthanded(lattice::Lattice)
-    Δ = _det(lattice.data)
+    Δ = _det(parent(lattice))
     return Δ > zero(Δ)
 end
 
@@ -66,7 +66,7 @@ The basis vectors are left-handed if and only if
 ```
 """
 function islefthanded(lattice::Lattice)
-    Δ = _det(lattice.data)
+    Δ = _det(parent(lattice))
     return Δ < zero(Δ)
 end
 
@@ -179,7 +179,7 @@ end
 
 Get crystal periodicity in ``x``, ``y``, and ``z`` direction from the `Lattice`.
 """
-periodicity(lattice::Lattice) = Tuple(sum(abs, lattice.data; dims=2))
+periodicity(lattice::Lattice) = Tuple(sum(abs, parent(lattice); dims=2))
 
 # See https://en.wikipedia.org/wiki/Supercell_(crystal)
 """
