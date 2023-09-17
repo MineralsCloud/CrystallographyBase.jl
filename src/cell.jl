@@ -1,5 +1,5 @@
 using CrystallographyCore: Cell, eachatom
-using LinearAlgebra: isdiag, diag
+using LinearAlgebra: I, isdiag, diag
 
 """
     supercell(cell::Cell, repfactors::AbstractMatrix{<:Integer})
