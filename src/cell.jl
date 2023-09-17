@@ -1,7 +1,5 @@
-using CrystallographyCore: Cell, natoms, atomtypes, eachatom
+using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: isdiag, diag
-
-export Cell, natoms, atomtypes, eachatom
 
 """
     supercell(cell::Cell, repfactors::AbstractMatrix{<:Integer})

@@ -3,8 +3,7 @@ using LinearAlgebra: Diagonal, I, norm
 
 import CrystallographyCore: Lattice
 
-export Lattice,
-    isrighthanded, islefthanded, latticesystem, latticeconstants, periodicity, supercell
+export isrighthanded, islefthanded, latticesystem, latticeconstants, periodicity, supercell
 
 """
     Lattice(a, b, c, α, β, γ; axis = :a)

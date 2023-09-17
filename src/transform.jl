@@ -1,3 +1,5 @@
+using StaticArrays: MMatrix
+
 export StandardizedFromPrimitive,
     PrimitiveFromStandardized, PrimitiveToStandardized, StandardizedToPrimitive
 
