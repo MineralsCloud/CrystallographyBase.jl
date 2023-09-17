@@ -5,15 +5,15 @@ export MetricTensor, distance
 struct MetricTensor{T} <: AbstractMatrix{T}
     data::SHermitianCompact{3,T,6}
 end
-MetricTensor(m::AbstractMatrix) = MetricTensor(SHermitianCompact{3}(m))
+MetricTensor(data::AbstractMatrix) = MetricTensor(SHermitianCompact{3}(data))
 """
     MetricTensor(𝐚::AbstractVector, 𝐛::AbstractVector, 𝐜::AbstractVector)
 
 Generate a `MetricTensor` from the three basis vectors.
 """
 function MetricTensor(𝐚::AbstractVector, 𝐛::AbstractVector, 𝐜::AbstractVector)
-    vecs = (𝐚, 𝐛, 𝐜)
-    return MetricTensor([dot(vᵢ, vⱼ) for vᵢ in vecs, vⱼ in vecs])
+    𝐚𝐛𝐜 = (𝐚, 𝐛, 𝐜)
+    return MetricTensor([dot(𝐱, 𝐲) for 𝐱 in 𝐚𝐛𝐜, 𝐲 in 𝐚𝐛𝐜])
 end
 """
     MetricTensor(lattice::Lattice)
@@ -65,10 +65,12 @@ function latticeconstants(g::MetricTensor)
     return a, b, c, α, β, γ
 end
 
+Base.parent(g::MetricTensor) = g.data
+
 Base.size(::MetricTensor) = (3, 3)
+
+Base.getindex(g::MetricTensor, i::Int) = getindex(parent(g), i)
 
 Base.IndexStyle(::Type{<:MetricTensor}) = IndexLinear()
 
-Base.getindex(g::MetricTensor, i) = getindex(g.data, i)
-
-Base.inv(g::MetricTensor) = MetricTensor(inv(g.data))
+Base.inv(g::MetricTensor) = MetricTensor(inv(parent(g)))
