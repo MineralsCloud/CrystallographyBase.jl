@@ -1,7 +1,10 @@
 module CrystallographyBase
 
 using LinearAlgebra: dot
-using StaticArrays: SVector, MMatrix
+using Reexport: @reexport
+using StaticArrays: SVector
+
+@reexport using CrystallographyCore
 
 # `LinearAlgebra.det` is much slower and more inaccurate than my simple `_det`.
 function _det(matrix)

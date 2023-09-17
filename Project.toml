@@ -7,6 +7,7 @@ version = "0.12.0"
 AnonymousEnums = "1b8a1bdb-a29a-4350-a16c-c7e9322d6a39"
 CrystallographyCore = "80545937-1184-4bc9-b283-396e91386b5c"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 
 [weakdeps]
