@@ -20,6 +20,7 @@ include("geometry.jl")
 include("metric.jl")
 include("volume.jl")
 include("transform.jl")
+include("eachatomgroup.jl")
 include("show.jl")
 
 end
