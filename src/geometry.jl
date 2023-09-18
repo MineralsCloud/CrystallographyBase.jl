@@ -6,8 +6,8 @@ const FACES = Base.vect(
 
 function vertices(lattice::Lattice, O⃗=zeros(eltype(lattice), 3))
     A⃗, B⃗, C⃗ = basisvectors(lattice)
-    A⃗B⃗, A⃗C⃗, B⃗C⃗, A⃗B⃗C⃗ = A⃗ + B⃗, A⃗ + C⃗, B⃗ + C⃗, A⃗ + B⃗ + C⃗
-    return (zeros(eltype(lattice), 3), A⃗, B⃗, C⃗, A⃗B⃗, A⃗C⃗, B⃗C⃗, A⃗B⃗C⃗) .+ Ref(O⃗)
+    A⃗B⃗, A⃗C⃗, B⃗C⃗, A⃗B⃗C⃗ = A⃗ + B⃗ - O⃗, A⃗ + C⃗ - O⃗, B⃗ + C⃗ - O⃗, A⃗ + B⃗ + C⃗ - 2O⃗
+    return (O⃗, A⃗, B⃗, C⃗, A⃗B⃗, A⃗C⃗, B⃗C⃗, A⃗B⃗C⃗)
 end
 
 edge(A⃗, B⃗) = hcat(([Aᵢ, Bᵢ] for (Aᵢ, Bᵢ) in zip(A⃗, B⃗))...)
