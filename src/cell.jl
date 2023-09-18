@@ -33,3 +33,8 @@ function supercell(cell::Cell, repfactors::AbstractMatrix{<:Integer})
     new_lattice = supercell(cell.lattice, repfactors)
     return Cell(new_lattice, new_positions, new_atoms)
 end
+
+function shift(cell::Cell, 𝐱::AbstractVector)
+    new_lattice = shift(Lattice(cell), 𝐱)
+    return Cell(new_lattice, cell.positions, cell.atoms)
+end
