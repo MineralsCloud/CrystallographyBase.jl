@@ -2,24 +2,24 @@ using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: I, isdiag, diag
 
 """
-    super(cell::Cell, repfactors::AbstractMatrix{<:Integer})
-    super(cell::Cell, repfactors::AbstractVector{<:Integer})
-    super(cell::Cell, repfactor::Integer)
+    super(cell::Cell, factors::AbstractMatrix{<:Integer})
+    super(cell::Cell, factors::AbstractVector{<:Integer})
+    super(cell::Cell, factor::Integer)
 
 Create a supercell from `cell`.
 
 !!! note
     Currently, only integral replications are supported.
 """
-function super(cell::Cell, repfactors::AbstractMatrix{<:Integer})
-    if size(repfactors) != (3, 3)
-        throw(ArgumentError("`repfactors` must be a 3×3 matrix!"))
+function super(cell::Cell, factors::AbstractMatrix{<:Integer})
+    if size(factors) != (3, 3)
+        throw(ArgumentError("`factors` must be a 3×3 matrix!"))
     end
-    @assert isdiag(repfactors) "currently not supported!"
-    @assert _det(repfactors) >= 1
+    @assert isdiag(factors) "currently not supported!"
+    @assert _det(factors) >= 1
     new_atoms = eltype(cell.atoms)[]
     new_positions = eltype(cell.positions)[]
-    l, m, n = diag(repfactors)
+    l, m, n = diag(factors)
     𝐚, 𝐛, 𝐜 = eachcol(Matrix(I, 3, 3))
     for (atom, position) in eachatom(cell)
         for (i, j, k) in Iterators.product(0:(l - 1), 0:(m - 1), 0:(n - 1))
@@ -30,7 +30,7 @@ function super(cell::Cell, repfactors::AbstractMatrix{<:Integer})
             push!(new_positions, new_position)
         end
     end
-    new_lattice = super(cell.lattice, repfactors)
+    new_lattice = super(cell.lattice, factors)
     return Cell(new_lattice, new_positions, new_atoms)
 end
 

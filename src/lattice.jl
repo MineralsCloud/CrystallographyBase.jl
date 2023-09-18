@@ -184,24 +184,24 @@ periodicity(lattice::Lattice) = Tuple(sum(abs, parent(lattice); dims=2))
 
 # See https://en.wikipedia.org/wiki/Supercell_(crystal)
 """
-    super(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
-    super(lattice::Lattice, repfactors::AbstractVector{<:Integer})
-    super(lattice::Lattice, repfactor::Integer)
+    super(lattice::Lattice, factors::AbstractMatrix{<:Integer})
+    super(lattice::Lattice, factors::AbstractVector{<:Integer})
+    super(lattice::Lattice, factor::Integer)
 
 Create a supercell from `lattice`.
 """
-function super(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
-    if size(repfactors) != (3, 3)
-        throw(ArgumentError("`repfactors` must be a 3×3 matrix!"))
+function super(lattice::Lattice, factors::AbstractMatrix{<:Integer})
+    if size(factors) != (3, 3)
+        throw(ArgumentError("`factors` must be a 3×3 matrix!"))
     end
     # Sometimes the matrix can have negative determinant, see https://gitlab.com/ase/ase/-/issues/938
-    @assert abs(_det(repfactors)) >= 1
+    @assert abs(_det(factors)) >= 1
     # See https://github.com/JuliaLang/julia/issues/51354
-    return Lattice(parent(lattice) * repfactors)
+    return Lattice(parent(lattice) * factors)
 end
-super(lattice_or_cell, repfactors::AbstractVector{<:Integer}) =
-    super(lattice_or_cell, Diagonal(repfactors))
+super(lattice_or_cell, factors::AbstractVector{<:Integer}) =
+    super(lattice_or_cell, Diagonal(factors))
 # See https://stackoverflow.com/a/57270841
-super(lattice_or_cell, repfactor::Integer) = super(lattice_or_cell, fill(repfactor, 3))
+super(lattice_or_cell, factor::Integer) = super(lattice_or_cell, fill(factor, 3))
 
 shift(lattice::Lattice, 𝐱::AbstractVector) = lattice .+ 𝐱
