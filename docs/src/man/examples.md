@@ -55,10 +55,10 @@ reciprocal(lattice₁)
 We can specify the replication factors in each direction in the following ways:
 
 ```@repl 1
-supercell(lattice₁, [2, 3, 4])
-supercell(lattice₁, 3)
-supercell(cell, [2, 3, 4])
-supercell(cell, 3)
+super(lattice₁, [2, 3, 4])
+super(lattice₁, 3)
+super(cell, [2, 3, 4])
+super(cell, 3)
 ```
 
 If only one integer is provided, it will be used in all three spatial directions.

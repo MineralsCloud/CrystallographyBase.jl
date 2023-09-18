@@ -2,35 +2,34 @@ using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: I, isdiag, diag
 
 """
-    supercell(cell::Cell, repfactors::AbstractMatrix{<:Integer})
-    supercell(cell::Cell, repfactors::AbstractVector{<:Integer})
-    supercell(cell::Cell, repfactor::Integer)
+    super(cell::Cell, factors::AbstractMatrix{<:Integer})
+    super(cell::Cell, factors::AbstractVector{<:Integer})
+    super(cell::Cell, factor::Integer)
 
 Create a supercell from `cell`.
 
 !!! note
     Currently, only integral replications are supported.
 """
-function supercell(cell::Cell, repfactors::AbstractMatrix{<:Integer})
-    if size(repfactors) != (3, 3)
-        throw(ArgumentError("`repfactors` must be a 3×3 matrix!"))
+function super(cell::Cell, factors::AbstractMatrix{<:Integer})
+    if size(factors) != (3, 3)
+        throw(ArgumentError("`factors` must be a 3×3 matrix!"))
     end
-    @assert isdiag(repfactors) "currently not supported!"
-    @assert _det(repfactors) >= 1
+    @assert isdiag(factors) "currently not supported!"
+    @assert all(factor >= 1 for factor in diag(factors)) "all factors must be greater than or equal to one!"
+    l, m, n = diag(factors)
+    𝐚, 𝐛, 𝐜 = eachcol(Matrix(I, 3, 3))
     new_atoms = eltype(cell.atoms)[]
     new_positions = eltype(cell.positions)[]
-    l, m, n = diag(repfactors)
-    𝐚, 𝐛, 𝐜 = eachcol(Matrix(I, 3, 3))
     for (atom, position) in eachatom(cell)
         for (i, j, k) in Iterators.product(0:(l - 1), 0:(m - 1), 0:(n - 1))
-            push!(new_atoms, atom)
-            # See https://doi.org/10.1186/s13321-016-0129-3
-            new_position = position + i * 𝐚 + j * 𝐛 + k * 𝐜
-            new_position ./= (l, m, n)  # Make them within the boundary of the cell
+            # See https://doi.org/10.1186/s13321-016-0129-3 and #111
+            new_position = (position + i * 𝐚 + j * 𝐛 + k * 𝐜) ./ (l, m, n)  # Make them within the boundary of the cell
             push!(new_positions, new_position)
+            push!(new_atoms, atom)
         end
     end
-    new_lattice = supercell(cell.lattice, repfactors)
+    new_lattice = super(cell.lattice, factors)
     return Cell(new_lattice, new_positions, new_atoms)
 end
 
