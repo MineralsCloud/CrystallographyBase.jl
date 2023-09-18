@@ -3,7 +3,8 @@ using LinearAlgebra: Diagonal, norm
 
 import CrystallographyCore: Lattice
 
-export isrighthanded, islefthanded, latticesystem, latticeconstants, periodicity, supercell
+export isrighthanded,
+    islefthanded, latticesystem, latticeconstants, periodicity, supercell, shift
 
 """
     Lattice(a, b, c, α, β, γ; axis = :a)
@@ -203,3 +204,5 @@ supercell(lattice_or_cell, repfactors::AbstractVector{<:Integer}) =
 # See https://stackoverflow.com/a/57270841
 supercell(lattice_or_cell, repfactor::Integer) =
     supercell(lattice_or_cell, fill(repfactor, 3))
+
+shift(lattice::Lattice, 𝐱::AbstractVector) = lattice .+ 𝐱
