@@ -4,7 +4,7 @@ using LinearAlgebra: Diagonal, norm
 import CrystallographyCore: Lattice
 
 export isrighthanded,
-    islefthanded, latticesystem, latticeconstants, periodicity, supercell, shift
+    islefthanded, latticesystem, latticeconstants, periodicity, super, shift
 
 """
     Lattice(a, b, c, α, β, γ; axis = :a)
@@ -184,13 +184,13 @@ periodicity(lattice::Lattice) = Tuple(sum(abs, parent(lattice); dims=2))
 
 # See https://en.wikipedia.org/wiki/Supercell_(crystal)
 """
-    supercell(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
-    supercell(lattice::Lattice, repfactors::AbstractVector{<:Integer})
-    supercell(lattice::Lattice, repfactor::Integer)
+    super(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
+    super(lattice::Lattice, repfactors::AbstractVector{<:Integer})
+    super(lattice::Lattice, repfactor::Integer)
 
 Create a supercell from `lattice`.
 """
-function supercell(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
+function super(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
     if size(repfactors) != (3, 3)
         throw(ArgumentError("`repfactors` must be a 3×3 matrix!"))
     end
@@ -199,10 +199,9 @@ function supercell(lattice::Lattice, repfactors::AbstractMatrix{<:Integer})
     # See https://github.com/JuliaLang/julia/issues/51354
     return Lattice(parent(lattice) * repfactors)
 end
-supercell(lattice_or_cell, repfactors::AbstractVector{<:Integer}) =
-    supercell(lattice_or_cell, Diagonal(repfactors))
+super(lattice_or_cell, repfactors::AbstractVector{<:Integer}) =
+    super(lattice_or_cell, Diagonal(repfactors))
 # See https://stackoverflow.com/a/57270841
-supercell(lattice_or_cell, repfactor::Integer) =
-    supercell(lattice_or_cell, fill(repfactor, 3))
+super(lattice_or_cell, repfactor::Integer) = super(lattice_or_cell, fill(repfactor, 3))
 
 shift(lattice::Lattice, 𝐱::AbstractVector) = lattice .+ 𝐱

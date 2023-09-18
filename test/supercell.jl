@@ -3,7 +3,7 @@ using StaticArrays: MMatrix
 
 @testset "Test the simplest `supercell` for a `Lattice`" begin
     lattice = Lattice(2, 1, 5, 90, 90, 90)
-    a = supercell(lattice, 3)
+    a = super(lattice, 3)
     b = Lattice(6, 3, 15, 90, 90, 90)
     @test a == b
     @test reciprocal(a) == reciprocal(b)
@@ -17,7 +17,7 @@ end
         0 1 0  # 𝐨₂ = 𝐡₂
         0 0 1  # 𝐨₃ = 𝐡₃
     ]'  # Note the transpose!
-    a = supercell(lattice, P)  # Hexagonal to orthorhombic
+    a = super(lattice, P)  # Hexagonal to orthorhombic
     b = Lattice([
         2*√3 0 0
         0 2 0
@@ -41,7 +41,7 @@ end
         0 1 -1
     ]'  # Note the transpose!
     @test det(P) == -2
-    a = supercell(lattice, P)  # Four-atom tetragonal supercell
+    a = super(lattice, P)  # Four-atom tetragonal supercell
     b = StandardizedFromPrimitive(P)(lattice)  # Two-atom cell to four-atom tetragonal cell
     @test a == b
 end
@@ -55,7 +55,7 @@ end
         -2 2 2
     ]
     @test det(P) == -32
-    a = supercell(lattice, P)  # Four-atom tetragonal supercell
+    a = super(lattice, P)  # Four-atom tetragonal supercell
     b = StandardizedFromPrimitive(P)(lattice)  # Two-atom cell to four-atom tetragonal cell
     @test a == b
 end
@@ -308,7 +308,7 @@ end
         :Ca,
     ]
     cell = Cell(lattice, positions, atoms)
-    new_cell = supercell(cell, [3, 6, 2])
+    new_cell = super(cell, [3, 6, 2])
     @test natoms(new_cell) == natoms(cell) * 3 * 6 * 2
     @test cellvolume(new_cell) ≈ cellvolume(cell) * 3 * 6 * 2
     @test reciprocal(Lattice(new_cell)) ≈ ReciprocalLattice(  # Compared with Xtals.jl results
