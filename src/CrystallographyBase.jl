@@ -21,6 +21,7 @@ include("metric.jl")
 include("volume.jl")
 include("transform.jl")
 include("eachatomgroup.jl")
+include("shifted.jl")
 include("show.jl")
 
 end
