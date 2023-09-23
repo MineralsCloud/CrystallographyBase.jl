@@ -66,12 +66,6 @@ _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
 _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
-interpolate(𝐚, 𝐛, density=100) = zip(
-    range(𝐚[1]; stop=𝐛[1], length=density),
-    range(𝐚[2]; stop=𝐛[2], length=density),
-    range(𝐚[3]; stop=𝐛[3], length=density),
-)
-
 struct Paths
     bz::BrillouinZone
     nodes::Vector{Symbol}
@@ -86,5 +80,19 @@ struct Paths
         end
         @assert length(nodes) == length(densities) + 1
         return new(bz, nodes, densities)
+    end
+end
+
+interpolate(𝐚, 𝐛, density=100) = collect(
+    zip(
+        range(𝐚[1]; stop=𝐛[1], length=density),
+        range(𝐚[2]; stop=𝐛[2], length=density),
+        range(𝐚[3]; stop=𝐛[3], length=density),
+    ),
+)
+function interpolate(paths::Paths)
+    return map(1:(length(paths.nodes) - 1)) do i
+        points = specialpoints(paths.bz)
+        interpolate(points[paths.nodes[i]], points[paths.nodes[i + 1]], paths.densities[i])
     end
 end
