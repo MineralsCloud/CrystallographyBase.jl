@@ -86,6 +86,20 @@ struct ReciprocalPaths
     end
 end
 
+struct DispersionRelation{T}
+    paths::ReciprocalPaths
+    values::Vector{Vector{T}}
+end
+function DispersionRelation(paths, values)
+    if length(eachpoint(paths)) != length(values)
+        throw(DimensionMismatch("the reciprocal points and bands do not match!"))
+    end
+    T = reduce(promote_type, eltype.(values))
+    return DispersionRelation{T}(paths, values)
+end
+const BandStructure = DispersionRelation
+const PhononSpectrum = DispersionRelation
+
 interpolate(𝐚, 𝐛, density=100) = collect(
     zip(
         range(𝐚[1]; stop=𝐛[1], length=density),
