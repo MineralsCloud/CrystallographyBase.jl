@@ -39,6 +39,7 @@ end
 end
 
 specialpoints(bz::BrillouinZone) = _specialpoints(Val(Int(bz)))
+specialpoints(bz::Union{Integer,Symbol}) = specialpoints(BrillouinZone(bz))
 _specialpoints(::Val{10}) = (
     Γ=[0, 0, 0],
     A=[0, 0, 1//2],
@@ -61,6 +62,7 @@ _specialpoints(::Val{14}) = (
 )
 
 suggestedpath(bz::BrillouinZone) = _suggestedpath(Val(Int(bz)))
+suggestedpath(bz::Union{Integer,Symbol}) = suggestedpath(BrillouinZone(bz))
 _suggestedpath(::Val{10}) = (:Γ, :M, :K, :Γ, :A, :L, :H, :A), (:L, :M), (:K, :H)
 _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
