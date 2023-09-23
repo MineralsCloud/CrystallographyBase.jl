@@ -80,16 +80,18 @@ struct ReciprocalPaths
     bz::BrillouinZone
     nodes::Vector{Symbol}
     densities::Vector{UInt64}
+    splits::Vector{Int64}  # See https://discourse.julialang.org/t/int-v-uint/11484
     function ReciprocalPaths(bz, nodes=suggestedpath(bz), densities=100)
         if bz isa Symbol || bz isa Integer
             bz = BrillouinZone(bz)
         end
+        splits = length.(nodes)
         nodes = collect(Iterators.flatten(nodes))
         if densities isa Integer
             densities = fill(densities, length(nodes) - 1)
         end
         @assert length(nodes) == length(densities) + 1
-        return new(bz, nodes, densities)
+        return new(bz, nodes, densities, splits)
     end
 end
 
