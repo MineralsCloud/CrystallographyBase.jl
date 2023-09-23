@@ -71,3 +71,20 @@ interpolate(𝐚, 𝐛, density=100) = zip(
     range(𝐚[2]; stop=𝐛[2], length=density),
     range(𝐚[3]; stop=𝐛[3], length=density),
 )
+
+struct Paths
+    bz::BrillouinZone
+    nodes::Vector{Symbol}
+    densities::Vector{UInt64}
+    function Paths(bz, nodes=suggestedpath(bz), densities=100)
+        if bz isa Symbol || bz isa Integer
+            bz = BrillouinZone(bz)
+        end
+        nodes = collect(Iterators.flatten(nodes))
+        if densities isa Integer
+            densities = fill(densities, length(nodes) - 1)
+        end
+        @assert length(nodes) == length(densities) + 1
+        return new(bz, nodes, densities)
+    end
+end
