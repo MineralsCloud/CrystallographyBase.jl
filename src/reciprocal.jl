@@ -99,3 +99,7 @@ function interpolate(paths::ReciprocalPaths)
         interpolate(points[paths.nodes[i]], points[paths.nodes[i + 1]], paths.densities[i])
     end
 end
+
+eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
+eachpoint(dispersion::DispersionRelation) =
+    zip(interpolate(dispersion.paths), dispersion.values)
