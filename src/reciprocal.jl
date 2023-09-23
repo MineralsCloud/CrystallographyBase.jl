@@ -1,4 +1,5 @@
-export MonkhorstPackGrid, BrillouinZone, Paths, specialpoints, suggestedpath, interpolate
+export MonkhorstPackGrid,
+    BrillouinZone, ReciprocalPaths, specialpoints, suggestedpath, interpolate
 
 """
     MonkhorstPackGrid(mesh, is_shift)
@@ -68,11 +69,11 @@ _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
 _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
-struct Paths
+struct ReciprocalPaths
     bz::BrillouinZone
     nodes::Vector{Symbol}
     densities::Vector{UInt64}
-    function Paths(bz, nodes=suggestedpath(bz), densities=100)
+    function ReciprocalPaths(bz, nodes=suggestedpath(bz), densities=100)
         if bz isa Symbol || bz isa Integer
             bz = BrillouinZone(bz)
         end
@@ -92,7 +93,7 @@ interpolate(𝐚, 𝐛, density=100) = collect(
         range(𝐚[3]; stop=𝐛[3], length=density),
     ),
 )
-function interpolate(paths::Paths)
+function interpolate(paths::ReciprocalPaths)
     return map(1:(length(paths.nodes) - 1)) do i
         points = specialpoints(paths.bz)
         interpolate(points[paths.nodes[i]], points[paths.nodes[i + 1]], paths.densities[i])
