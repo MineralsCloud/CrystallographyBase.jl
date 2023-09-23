@@ -65,3 +65,9 @@ _suggestedpath(::Val{10}) = (:Γ, :M, :K, :Γ, :A, :L, :H, :A), (:L, :M), (:K, :
 _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
 _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
+
+interpolate(𝐚, 𝐛, density=100) = zip(
+    range(𝐚[1]; stop=𝐛[1], length=density),
+    range(𝐚[2]; stop=𝐛[2], length=density),
+    range(𝐚[3]; stop=𝐛[3], length=density),
+)
