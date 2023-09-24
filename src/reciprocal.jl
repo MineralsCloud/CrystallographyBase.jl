@@ -87,20 +87,22 @@ end
 ReciprocalPath(start_node, end_node, density) =
     ReciprocalPath(start_node, end_node, density)
 
-struct DispersionRelation{T}
-    path::ReciprocalPath
+struct DispersionRelation{X,Y,T}
+    path::ReciprocalPath{X,Y}
     bands::Matrix{T}
-end
-function DispersionRelation(path, bands)
-    if length(interpolate(path)) != size(bands, 1)
-        throw(
-            DimensionMismatch(
-                "the number of interpolated reciprocal points and bands are different!"
-            ),
-        )
+    function DispersionRelation{X,Y,T}(path, bands) where {X,Y,T}
+        if length(interpolate(path)) != size(bands, 1)
+            throw(
+                DimensionMismatch(
+                    "the number of interpolated reciprocal points and bands are different!"
+                ),
+            )
+        end
+        return new(path, bands)
     end
-    return DispersionRelation{eltype(bands)}(path, bands)
 end
+DispersionRelation(path::ReciprocalPath{X,Y}, bands::AbstractMatrix{T}) where {X,Y,T} =
+    DispersionRelation{X,Y,T}(path, bands)
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
