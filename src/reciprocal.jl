@@ -76,6 +76,15 @@ _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
 _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
+struct ReciprocalPath
+    bz::BrillouinZone
+    start_node::Symbol
+    end_node::Symbol
+    density::UInt64
+end
+ReciprocalPath(bz::Union{Integer,Symbol}, start_node, end_node, density) =
+    ReciprocalPath(BrillouinZone(bz), start_node, end_node, density)
+
 struct ReciprocalPaths
     bz::BrillouinZone
     nodes::Vector{Symbol}
