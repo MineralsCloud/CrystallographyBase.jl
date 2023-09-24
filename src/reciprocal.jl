@@ -104,9 +104,9 @@ end
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
-eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
+eachpoint(path::ReciprocalPath) = (point for point in interpolate(path))
 eachpoint(dispersion::DispersionRelation) =
-    zip(interpolate(dispersion.paths), dispersion.values)
+    zip(interpolate(dispersion.path), eachrow(dispersion.bands))
 
 function eachpath(paths::ReciprocalPaths)
     return Iterators.flatten(
