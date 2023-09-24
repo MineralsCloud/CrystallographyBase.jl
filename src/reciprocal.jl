@@ -108,11 +108,6 @@ eachpoint(path::ReciprocalPath) = (point for point in interpolate(path))
 eachpoint(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.path), eachrow(dispersion.bands))
 
-function eachpath(paths::ReciprocalPaths)
-    return Iterators.flatten(
-        map(1:(length(chain) - 1)) do i
-            ReciprocalPath(paths.bz, chain[i], chain[i + 1], paths.densities[i])
-        end for chain in eachchain(paths)
 function interpolate(
     path::ReciprocalPath{AbstractVector{<:Number},AbstractVector{<:Number}}
 )
