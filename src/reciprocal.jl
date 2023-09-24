@@ -94,7 +94,8 @@ struct ReciprocalPaths
         if bz isa Symbol || bz isa Integer
             bz = BrillouinZone(bz)
         end
-        breakpoints = collect(accumulate(+, length.(nodes); init=0))  # Only used in plotting
+        breakpoints = collect(accumulate(+, length.(nodes); init=0))
+        prepend!(breakpoints, firstindex(breakpoints) - 1)
         nodes = collect(Iterators.flatten(nodes))
         if densities isa Integer
             densities = fill(densities, length(nodes) - 1)
