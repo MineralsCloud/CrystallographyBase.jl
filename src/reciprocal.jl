@@ -87,26 +87,6 @@ end
 ReciprocalPath(start_node, end_node, density) =
     ReciprocalPath(start_node, end_node, density)
 
-struct ReciprocalPaths
-    bz::BrillouinZone
-    nodes::Vector{Symbol}
-    densities::Vector{UInt64}
-    breakpoints::Vector{Int64}  # See https://discourse.julialang.org/t/int-v-uint/11484
-    function ReciprocalPaths(bz, nodes=suggestedpath(bz), densities=100)
-        if bz isa Symbol || bz isa Integer
-            bz = BrillouinZone(bz)
-        end
-        breakpoints = collect(accumulate(+, length.(nodes); init=0))
-        prepend!(breakpoints, firstindex(breakpoints) - 1)
-        nodes = collect(Iterators.flatten(nodes))
-        if densities isa Integer
-            densities = fill(densities, length(nodes) - 1)
-        end
-        @assert length(nodes) == length(densities) + 1
-        return new(bz, nodes, densities, breakpoints)
-    end
-end
-
 struct DispersionRelation{T}
     path::ReciprocalPath
     bands::Matrix{T}
