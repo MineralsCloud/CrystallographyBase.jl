@@ -149,7 +149,7 @@ struct EachChain{T}
     breakpoints::Vector{Int64}
 end
 
-Base.eltype(::EachChain{T}) where {T} = T
+Base.eltype(iter::EachChain) = typeof(iter.nodes)
 
 Base.length(iter::EachChain) = length(iter.breakpoints) - 1
 
