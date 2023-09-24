@@ -6,7 +6,10 @@ export MonkhorstPackGrid,
     PhononSpectrum,
     specialpoints,
     suggestedpath,
-    interpolate
+    interpolate,
+    eachpoint,
+    eachpath,
+    eachchain
 
 """
     MonkhorstPackGrid(mesh, is_shift)
