@@ -136,6 +136,8 @@ eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
 eachpoint(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.paths), dispersion.values)
 
+eachpath(paths::ReciprocalPaths) = Iterators.flatten(eachchain(paths))
+
 struct EachChain{T}
     nodes::Vector{T}
     breakpoints::Vector{Int64}
