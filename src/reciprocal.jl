@@ -104,19 +104,6 @@ end
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
-_interpolate(𝐚, 𝐛, density=100) = collect(
-    zip(
-        range(𝐚[1]; stop=𝐛[1], length=density),
-        range(𝐚[2]; stop=𝐛[2], length=density),
-        range(𝐚[3]; stop=𝐛[3], length=density),
-    ),
-)
-function interpolate(path::ReciprocalPath)
-    start_node, end_node = specialpoints(path.bz)
-    return _interpolate(start_node, end_node, path.density)
-end
-interpolate(paths::ReciprocalPaths) = map(interpolate, eachpath(paths))
-
 eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
 eachpoint(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.paths), dispersion.values)
@@ -126,6 +113,20 @@ function eachpath(paths::ReciprocalPaths)
         map(1:(length(chain) - 1)) do i
             ReciprocalPath(paths.bz, chain[i], chain[i + 1], paths.densities[i])
         end for chain in eachchain(paths)
+function interpolate(
+    path::ReciprocalPath{AbstractVector{<:Number},AbstractVector{<:Number}}
+)
+    𝐚, 𝐛, density = path.start_node, path.end_node, path.density
+    return collect(
+        zip(
+            range(𝐚[1]; stop=𝐛[1], length=density),
+            range(𝐚[2]; stop=𝐛[2], length=density),
+            range(𝐚[3]; stop=𝐛[3], length=density),
+        ),
     )
 end
-
+function interpolate(path::ReciprocalPath{Symbol,Symbol}, bz::BrillouinZone)
+    start_node, end_node = specialpoints(bz)
+    return map(collect, interpolate(start_node, end_node, path.density))
+end
+interpolate(dispersion::DispersionRelation) = collect(eachpoint(dispersion))
