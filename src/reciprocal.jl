@@ -135,3 +135,25 @@ end
 eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
 eachpoint(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.paths), dispersion.values)
+
+struct EachChain{T}
+    nodes::Vector{T}
+    breakpoints::Vector{Int64}
+end
+
+Base.eltype(::EachChain{T}) where {T} = T
+
+Base.length(iter::EachChain) = length(iter.breakpoints) - 1
+
+Base.IteratorSize(::Type{<:EachChain}) = Base.HasLength()
+
+function Base.iterate(iter::EachChain, state=1)
+    if state > length(iter)
+        return nothing
+    else
+        range = (iter.breakpoints[state] + 1):iter.breakpoints[state + 1]
+        return iter.nodes[range], state + 1
+    end
+end
+
+eachchain(paths::ReciprocalPaths) = EachChain(paths.nodes, paths.breakpoints)
