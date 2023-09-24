@@ -147,24 +147,3 @@ function eachpath(paths::ReciprocalPaths)
     )
 end
 
-struct EachChain{T}
-    nodes::Vector{T}
-    breakpoints::Vector{Int64}
-end
-
-Base.eltype(iter::EachChain) = typeof(iter.nodes)
-
-Base.length(iter::EachChain) = length(iter.breakpoints) - 1
-
-Base.IteratorSize(::Type{<:EachChain}) = Base.HasLength()
-
-function Base.iterate(iter::EachChain, state=1)
-    if state > length(iter)
-        return nothing
-    else
-        range = (iter.breakpoints[state] + 1):iter.breakpoints[state + 1]
-        return iter.nodes[range], state + 1
-    end
-end
-
-eachchain(paths::ReciprocalPaths) = EachChain(paths.nodes, paths.breakpoints)
