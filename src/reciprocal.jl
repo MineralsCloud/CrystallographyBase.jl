@@ -1,4 +1,15 @@
-export MonkhorstPackGrid, BrillouinZone, Paths, specialpoints, suggestedpath, interpolate
+export MonkhorstPackGrid,
+    BrillouinZone,
+    ReciprocalPaths,
+    DispersionRelation,
+    BandStructure,
+    PhononSpectrum,
+    specialpoints,
+    suggestedpath,
+    interpolate,
+    eachpoint,
+    eachpath,
+    eachchain
 
 """
     MonkhorstPackGrid(mesh, is_shift)
@@ -68,33 +79,92 @@ _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
 _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
-struct Paths
+struct ReciprocalPath
+    bz::BrillouinZone
+    start_node::Symbol
+    end_node::Symbol
+    density::UInt64
+end
+ReciprocalPath(bz::Union{Integer,Symbol}, start_node, end_node, density) =
+    ReciprocalPath(BrillouinZone(bz), start_node, end_node, density)
+
+struct ReciprocalPaths
     bz::BrillouinZone
     nodes::Vector{Symbol}
     densities::Vector{UInt64}
-    function Paths(bz, nodes=suggestedpath(bz), densities=100)
+    breakpoints::Vector{Int64}  # See https://discourse.julialang.org/t/int-v-uint/11484
+    function ReciprocalPaths(bz, nodes=suggestedpath(bz), densities=100)
         if bz isa Symbol || bz isa Integer
             bz = BrillouinZone(bz)
         end
+        breakpoints = collect(accumulate(+, length.(nodes); init=0))
+        prepend!(breakpoints, firstindex(breakpoints) - 1)
         nodes = collect(Iterators.flatten(nodes))
         if densities isa Integer
             densities = fill(densities, length(nodes) - 1)
         end
         @assert length(nodes) == length(densities) + 1
-        return new(bz, nodes, densities)
+        return new(bz, nodes, densities, breakpoints)
     end
 end
 
-interpolate(𝐚, 𝐛, density=100) = collect(
+struct DispersionRelation{T}
+    paths::ReciprocalPaths
+    values::Vector{Vector{T}}
+end
+function DispersionRelation(paths, values)
+    if length(eachpoint(paths)) != length(values)
+        throw(DimensionMismatch("the reciprocal points and bands do not match!"))
+    end
+    T = reduce(promote_type, eltype.(values))
+    return DispersionRelation{T}(paths, values)
+end
+const BandStructure = DispersionRelation
+const PhononSpectrum = DispersionRelation
+
+_interpolate(𝐚, 𝐛, density=100) = collect(
     zip(
         range(𝐚[1]; stop=𝐛[1], length=density),
         range(𝐚[2]; stop=𝐛[2], length=density),
         range(𝐚[3]; stop=𝐛[3], length=density),
     ),
 )
-function interpolate(paths::Paths)
-    return map(1:(length(paths.nodes) - 1)) do i
-        points = specialpoints(paths.bz)
-        interpolate(points[paths.nodes[i]], points[paths.nodes[i + 1]], paths.densities[i])
+function interpolate(path::ReciprocalPath)
+    start_node, end_node = specialpoints(path.bz)
+    return _interpolate(start_node, end_node, path.density)
+end
+interpolate(paths::ReciprocalPaths) = map(interpolate, eachpath(paths))
+
+eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
+eachpoint(dispersion::DispersionRelation) =
+    zip(interpolate(dispersion.paths), dispersion.values)
+
+function eachpath(paths::ReciprocalPaths)
+    return Iterators.flatten(
+        map(1:(length(chain) - 1)) do i
+            ReciprocalPath(paths.bz, chain[i], chain[i + 1], paths.densities[i])
+        end for chain in eachchain(paths)
+    )
+end
+
+struct EachChain{T}
+    nodes::Vector{T}
+    breakpoints::Vector{Int64}
+end
+
+Base.eltype(iter::EachChain) = typeof(iter.nodes)
+
+Base.length(iter::EachChain) = length(iter.breakpoints) - 1
+
+Base.IteratorSize(::Type{<:EachChain}) = Base.HasLength()
+
+function Base.iterate(iter::EachChain, state=1)
+    if state > length(iter)
+        return nothing
+    else
+        range = (iter.breakpoints[state] + 1):iter.breakpoints[state + 1]
+        return iter.nodes[range], state + 1
     end
 end
+
+eachchain(paths::ReciprocalPaths) = EachChain(paths.nodes, paths.breakpoints)
