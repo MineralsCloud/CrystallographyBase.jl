@@ -118,19 +118,18 @@ end
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
-interpolate(𝐚, 𝐛, density=100) = collect(
+_interpolate(𝐚, 𝐛, density=100) = collect(
     zip(
         range(𝐚[1]; stop=𝐛[1], length=density),
         range(𝐚[2]; stop=𝐛[2], length=density),
         range(𝐚[3]; stop=𝐛[3], length=density),
     ),
 )
-function interpolate(paths::ReciprocalPaths)
-    return map(1:(length(paths.nodes) - 1)) do i
-        points = specialpoints(paths.bz)
-        interpolate(points[paths.nodes[i]], points[paths.nodes[i + 1]], paths.densities[i])
-    end
+function interpolate(path::ReciprocalPath)
+    start_node, end_node = specialpoints(path.bz)
+    return _interpolate(start_node, end_node, path.density)
 end
+interpolate(paths::ReciprocalPaths) = map(interpolate, eachpath(paths))
 
 eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
 eachpoint(dispersion::DispersionRelation) =
