@@ -82,11 +82,10 @@ _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 struct ReciprocalPath{X,Y}
     start_node::X
     end_node::Y
-    bz::BrillouinZone
     density::UInt64
 end
-ReciprocalPath(start_node, end_node, bz::Union{Integer,Symbol}, density) =
-    ReciprocalPath(start_node, end_node, BrillouinZone(bz), density)
+ReciprocalPath(start_node, end_node, density) =
+    ReciprocalPath(start_node, end_node, density)
 
 struct ReciprocalPaths
     bz::BrillouinZone
