@@ -137,7 +137,7 @@ function interpolate(path::ReciprocalPath)
     return map(ReducedCoordinates, zip(iter...))
 end
 
-function normalized_lengths(
+function normalize_lengths(
     paths::AbstractVector{<:ReciprocalPath}, recip_lattice::ReciprocalLattice
 )
     g = MetricTensor(recip_lattice)
