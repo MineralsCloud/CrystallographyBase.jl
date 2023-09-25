@@ -1,15 +1,16 @@
 export MonkhorstPackGrid,
     BrillouinZone,
-    ReciprocalPaths,
+    ReciprocalPath,
     DispersionRelation,
     BandStructure,
     PhononSpectrum,
     specialpoints,
-    suggestedpath,
+    suggestedpaths,
+    makepaths,
     interpolate,
-    eachpoint,
-    eachpath,
-    eachchain
+    eachwavevector,
+    eachbranch,
+    normalize_lengths
 
 """
     MonkhorstPackGrid(mesh, is_shift)
