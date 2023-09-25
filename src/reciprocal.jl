@@ -80,12 +80,12 @@ _specialpoints(::Val{14}) = (
     K=ReducedCoordinates(3//8, 3//4, 3//8),
 )
 
-suggestedpath(bz::BrillouinZone) = _suggestedpath(Val(Int(bz)))
-suggestedpath(bz::Union{Integer,Symbol}) = suggestedpath(BrillouinZone(bz))
-_suggestedpath(::Val{10}) = (:Γ, :M, :K, :Γ, :A, :L, :H, :A), (:L, :M), (:K, :H)
-_suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
-_suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
-_suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
+suggestedpaths(bz::BrillouinZone) = _suggestedpaths(Val(Int(bz)))
+suggestedpaths(bz::Union{Integer,Symbol}) = suggestedpaths(BrillouinZone(bz))
+_suggestedpaths(::Val{10}) = (:Γ, :M, :K, :Γ, :A, :L, :H, :A), (:L, :M), (:K, :H)
+_suggestedpaths(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
+_suggestedpaths(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
+_suggestedpaths(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
 struct ReciprocalPath{T}
     start_node::ReducedCoordinates{T}
