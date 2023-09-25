@@ -120,17 +120,11 @@ eachpoint(path::ReciprocalPath) = (point for point in interpolate(path))
 eachpoint(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.path), eachrow(dispersion.bands))
 
-function interpolate(
-    path::ReciprocalPath{<:ReducedCoordinates,<:ReducedCoordinates}, recip_lattice=nothing
-)
-    𝐚, 𝐛, density = path.start_node, path.end_node, path.density
-    points = collect(
-        zip(
-            range(𝐚[1]; stop=𝐛[1], length=density),
-            range(𝐚[2]; stop=𝐛[2], length=density),
-            range(𝐚[3]; stop=𝐛[3], length=density),
-        ),
+function interpolate(path::ReciprocalPath)
+    iter = (
+        range(aᵢ; stop=bᵢ, length=path.density) for
+        (aᵢ, bᵢ) in zip(path.start_node, path.end_node)
     )
-    return isnothing(recip_lattice) ? points : Ref(recip_lattice) .* points
+    return map(ReducedCoordinates, zip(iter...))
 end
 interpolate(dispersion::DispersionRelation) = collect(eachpoint(dispersion))
