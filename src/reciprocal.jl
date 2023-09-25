@@ -92,8 +92,10 @@ struct ReciprocalPath{T}
     end_node::ReducedCoordinates{T}
     density::UInt64
 end
-ReciprocalPath(start_node, end_node, density) =
-    ReciprocalPath(start_node, end_node, density)
+function ReciprocalPath(bz::BrillouinZone, start_node::Symbol, end_node::Symbol, density)
+    points = specialpoints(bz)
+    return ReciprocalPath(points[start_node], points[end_node], density)
+end
 
 struct DispersionRelation{S,T}
     path::ReciprocalPath{S}
