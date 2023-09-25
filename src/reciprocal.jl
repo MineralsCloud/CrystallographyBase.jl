@@ -128,3 +128,12 @@ function interpolate(path::ReciprocalPath)
     )
     return map(ReducedCoordinates, zip(iter...))
 end
+
+function normalized_lengths(
+    paths::AbstractVector{<:ReciprocalPath}, recip_lattice::ReciprocalLattice
+)
+    g = MetricTensor(recip_lattice)
+    distances = collect(distance(path.start_node, g, path.end_node) for path in paths)
+    total_distance = sum(distances)
+    return distances ./= total_distance
+end
