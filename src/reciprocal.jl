@@ -111,16 +111,17 @@ eachpoint(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.path), eachrow(dispersion.bands))
 
 function interpolate(
-    path::ReciprocalPath{AbstractVector{<:Number},AbstractVector{<:Number}}
+    path::ReciprocalPath{<:ReducedCoordinates,<:ReducedCoordinates}, recip_lattice=nothing
 )
     𝐚, 𝐛, density = path.start_node, path.end_node, path.density
-    return collect(
+    points = collect(
         zip(
             range(𝐚[1]; stop=𝐛[1], length=density),
             range(𝐚[2]; stop=𝐛[2], length=density),
             range(𝐚[3]; stop=𝐛[3], length=density),
         ),
     )
+    return isnothing(recip_lattice) ? points : Ref(recip_lattice) .* points
 end
 function interpolate(path::ReciprocalPath{Symbol,Symbol}, bz::BrillouinZone)
     start_node, end_node = specialpoints(bz)
