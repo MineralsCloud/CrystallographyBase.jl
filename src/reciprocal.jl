@@ -87,18 +87,18 @@ _suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
 _suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
 _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
-struct ReciprocalPath{X,Y}
-    start_node::X
-    end_node::Y
+struct ReciprocalPath{T}
+    start_node::ReducedCoordinates{T}
+    end_node::ReducedCoordinates{T}
     density::UInt64
 end
 ReciprocalPath(start_node, end_node, density) =
     ReciprocalPath(start_node, end_node, density)
 
-struct DispersionRelation{X,Y,T}
-    path::ReciprocalPath{X,Y}
+struct DispersionRelation{S,T}
+    path::ReciprocalPath{S}
     bands::Matrix{T}
-    function DispersionRelation{X,Y,T}(path, bands) where {X,Y,T}
+    function DispersionRelation{S,T}(path, bands) where {S,T}
         if length(interpolate(path)) != size(bands, 1)
             throw(
                 DimensionMismatch(
@@ -109,8 +109,8 @@ struct DispersionRelation{X,Y,T}
         return new(path, bands)
     end
 end
-DispersionRelation(path::ReciprocalPath{X,Y}, bands::AbstractMatrix{T}) where {X,Y,T} =
-    DispersionRelation{X,Y,T}(path, bands)
+DispersionRelation(path::ReciprocalPath{S}, bands::AbstractMatrix{T}) where {S,T} =
+    DispersionRelation{S,T}(path, bands)
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
@@ -130,9 +130,5 @@ function interpolate(
         ),
     )
     return isnothing(recip_lattice) ? points : Ref(recip_lattice) .* points
-end
-function interpolate(path::ReciprocalPath{Symbol,Symbol}, bz::BrillouinZone)
-    start_node, end_node = specialpoints(bz)
-    return map(collect, interpolate(start_node, end_node, path.density))
 end
 interpolate(dispersion::DispersionRelation) = collect(eachpoint(dispersion))
