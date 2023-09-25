@@ -116,8 +116,7 @@ DispersionRelation(path::ReciprocalPath{S}, bands::AbstractMatrix{T}) where {S,T
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
-eachpoint(path::ReciprocalPath) = (point for point in interpolate(path))
-eachpoint(dispersion::DispersionRelation) =
+eachwavevector(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.path), eachrow(dispersion.bands))
 
 function interpolate(path::ReciprocalPath)
@@ -127,4 +126,4 @@ function interpolate(path::ReciprocalPath)
     )
     return map(ReducedCoordinates, zip(iter...))
 end
-interpolate(dispersion::DispersionRelation) = collect(eachpoint(dispersion))
+interpolate(dispersion::DispersionRelation) = collect(eachwavevector(dispersion))
