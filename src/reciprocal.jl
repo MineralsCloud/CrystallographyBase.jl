@@ -119,6 +119,8 @@ const PhononSpectrum = DispersionRelation
 eachwavevector(dispersion::DispersionRelation) =
     zip(interpolate(dispersion.path), eachrow(dispersion.bands))
 
+eachbranch(dispersion::DispersionRelation) = eachcol(dispersion.bands)
+
 function interpolate(path::ReciprocalPath)
     iter = (
         range(aᵢ; stop=bᵢ, length=path.density) for
