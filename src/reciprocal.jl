@@ -52,24 +52,32 @@ end
 specialpoints(bz::BrillouinZone) = _specialpoints(Val(Int(bz)))
 specialpoints(bz::Union{Integer,Symbol}) = specialpoints(BrillouinZone(bz))
 _specialpoints(::Val{10}) = (
-    Γ=[0, 0, 0],
-    A=[0, 0, 1//2],
-    K=[2//3, 1//3, 0],
-    H=[2//3, 1//3, 1//2],
-    M=[1//2, 0, 0],
-    L=[1//2, 0, 1//2],
+    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    A=ReducedCoordinates(0, 0, 1//2),
+    K=ReducedCoordinates(2//3, 1//3, 0),
+    H=ReducedCoordinates(2//3, 1//3, 1//2),
+    M=ReducedCoordinates(1//2, 0, 0),
+    L=ReducedCoordinates(1//2, 0, 1//2),
 )
-_specialpoints(::Val{12}) =
-    (Γ=[0, 0, 0], X=[0, 1//2, 0], M=[1//2, 1//2, 0], R=[1//2, 1//2, 1//2])
-_specialpoints(::Val{13}) =
-    (Γ=[0, 0, 0], N=[0, 1//2, 0], P=[1//4, 1//4, 1//4], H=[-1//2, 1//2, 1//2])
+_specialpoints(::Val{12}) = (
+    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    X=ReducedCoordinates(0, 1//2, 0),
+    M=ReducedCoordinates(1//2, 1//2, 0),
+    R=ReducedCoordinates(1//2, 1//2, 1//2),
+)
+_specialpoints(::Val{13}) = (
+    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    N=ReducedCoordinates(0, 1//2, 0),
+    P=ReducedCoordinates(1//4, 1//4, 1//4),
+    H=ReducedCoordinates(-1//2, 1//2, 1//2),
+)
 _specialpoints(::Val{14}) = (
-    Γ=[0, 0, 0],
-    X=[0, 1//2, 1//2],
-    L=[1//2, 1//2, 1//2],
-    W=[1//4, 3//4, 1//2],
-    U=[1//4, 5//8, 5//8],
-    K=[3//8, 3//4, 3//8],
+    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    X=ReducedCoordinates(0, 1//2, 1//2),
+    L=ReducedCoordinates(1//2, 1//2, 1//2),
+    W=ReducedCoordinates(1//4, 3//4, 1//2),
+    U=ReducedCoordinates(1//4, 5//8, 5//8),
+    K=ReducedCoordinates(3//8, 3//4, 3//8),
 )
 
 suggestedpath(bz::BrillouinZone) = _suggestedpath(Val(Int(bz)))
