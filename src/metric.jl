@@ -20,7 +20,7 @@ end
 
 Generate a `MetricTensor` from a `Lattice`.
 """
-function MetricTensor(lattice::Lattice)
+function MetricTensor(lattice::AbstractLattice)
     data = parent(lattice)
     return MetricTensor(transpose(data) * data)
 end

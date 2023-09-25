@@ -1,15 +1,16 @@
 export MonkhorstPackGrid,
     BrillouinZone,
-    ReciprocalPaths,
+    ReciprocalPath,
     DispersionRelation,
     BandStructure,
     PhononSpectrum,
     specialpoints,
-    suggestedpath,
+    suggestedpaths,
+    makepaths,
     interpolate,
-    eachpoint,
-    eachpath,
-    eachchain
+    eachwavevector,
+    eachbranch,
+    normalize_lengths
 
 """
     MonkhorstPackGrid(mesh, is_shift)
@@ -50,121 +51,98 @@ end
 end
 
 specialpoints(bz::BrillouinZone) = _specialpoints(Val(Int(bz)))
-specialpoints(bz::Union{Integer,Symbol}) = specialpoints(BrillouinZone(bz))
 _specialpoints(::Val{10}) = (
-    Γ=[0, 0, 0],
-    A=[0, 0, 1//2],
-    K=[2//3, 1//3, 0],
-    H=[2//3, 1//3, 1//2],
-    M=[1//2, 0, 0],
-    L=[1//2, 0, 1//2],
+    Γ=ReducedCoordinates(0//1, 0, 0),
+    A=ReducedCoordinates(0, 0, 1//2),
+    K=ReducedCoordinates(2//3, 1//3, 0),
+    H=ReducedCoordinates(2//3, 1//3, 1//2),
+    M=ReducedCoordinates(1//2, 0, 0),
+    L=ReducedCoordinates(1//2, 0, 1//2),
 )
-_specialpoints(::Val{12}) =
-    (Γ=[0, 0, 0], X=[0, 1//2, 0], M=[1//2, 1//2, 0], R=[1//2, 1//2, 1//2])
-_specialpoints(::Val{13}) =
-    (Γ=[0, 0, 0], N=[0, 1//2, 0], P=[1//4, 1//4, 1//4], H=[-1//2, 1//2, 1//2])
+_specialpoints(::Val{12}) = (
+    Γ=ReducedCoordinates(0//1, 0, 0),
+    X=ReducedCoordinates(0, 1//2, 0),
+    M=ReducedCoordinates(1//2, 1//2, 0),
+    R=ReducedCoordinates(1//2, 1//2, 1//2),
+)
+_specialpoints(::Val{13}) = (
+    Γ=ReducedCoordinates(0//1, 0, 0),
+    N=ReducedCoordinates(0, 1//2, 0),
+    P=ReducedCoordinates(1//4, 1//4, 1//4),
+    H=ReducedCoordinates(-1//2, 1//2, 1//2),
+)
 _specialpoints(::Val{14}) = (
-    Γ=[0, 0, 0],
-    X=[0, 1//2, 1//2],
-    L=[1//2, 1//2, 1//2],
-    W=[1//4, 3//4, 1//2],
-    U=[1//4, 5//8, 5//8],
-    K=[3//8, 3//4, 3//8],
+    Γ=ReducedCoordinates(0//1, 0, 0),
+    X=ReducedCoordinates(0, 1//2, 1//2),
+    L=ReducedCoordinates(1//2, 1//2, 1//2),
+    W=ReducedCoordinates(1//4, 3//4, 1//2),
+    U=ReducedCoordinates(1//4, 5//8, 5//8),
+    K=ReducedCoordinates(3//8, 3//4, 3//8),
 )
 
-suggestedpath(bz::BrillouinZone) = _suggestedpath(Val(Int(bz)))
-suggestedpath(bz::Union{Integer,Symbol}) = suggestedpath(BrillouinZone(bz))
-_suggestedpath(::Val{10}) = (:Γ, :M, :K, :Γ, :A, :L, :H, :A), (:L, :M), (:K, :H)
-_suggestedpath(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
-_suggestedpath(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
-_suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
+suggestedpaths(bz::BrillouinZone) = _suggestedpaths(Val(Int(bz)))
+_suggestedpaths(::Val{10}) = (:Γ, :M, :K, :Γ, :A, :L, :H, :A), (:L, :M), (:K, :H)
+_suggestedpaths(::Val{12}) = (:Γ, :X, :M, :Γ, :R, :X), (:M, :R)
+_suggestedpaths(::Val{13}) = (:Γ, :H, :N, :Γ, :P, :H), (:P, :N)
+_suggestedpaths(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 
-struct ReciprocalPath
-    bz::BrillouinZone
-    start_node::Symbol
-    end_node::Symbol
-    density::UInt64
+struct ReciprocalPath{T}
+    start_node::ReducedCoordinates{T}
+    end_node::ReducedCoordinates{T}
+    density::Int64
 end
-ReciprocalPath(bz::Union{Integer,Symbol}, start_node, end_node, density) =
-    ReciprocalPath(BrillouinZone(bz), start_node, end_node, density)
+function ReciprocalPath(bz::BrillouinZone, start_node::Symbol, end_node::Symbol, density)
+    points = specialpoints(bz)
+    return ReciprocalPath(points[start_node], points[end_node], density)
+end
 
-struct ReciprocalPaths
-    bz::BrillouinZone
-    nodes::Vector{Symbol}
-    densities::Vector{UInt64}
-    breakpoints::Vector{Int64}  # See https://discourse.julialang.org/t/int-v-uint/11484
-    function ReciprocalPaths(bz, nodes=suggestedpath(bz), densities=100)
-        if bz isa Symbol || bz isa Integer
-            bz = BrillouinZone(bz)
-        end
-        breakpoints = collect(accumulate(+, length.(nodes); init=0))
-        prepend!(breakpoints, firstindex(breakpoints) - 1)
-        nodes = collect(Iterators.flatten(nodes))
-        if densities isa Integer
-            densities = fill(densities, length(nodes) - 1)
-        end
-        @assert length(nodes) == length(densities) + 1
-        return new(bz, nodes, densities, breakpoints)
+function makepaths(bz::BrillouinZone, nodes, densities)
+    if densities isa Integer
+        densities = fill(densities, length(nodes) - 1)
+    end
+    @assert length(nodes) == length(densities) + 1
+    return map(Base.OneTo(length(nodes) - 1)) do i
+        ReciprocalPath(bz, nodes[i], nodes[i + 1], densities[i])
     end
 end
 
-struct DispersionRelation{T}
-    paths::ReciprocalPaths
-    values::Vector{Vector{T}}
-end
-function DispersionRelation(paths, values)
-    if length(eachpoint(paths)) != length(values)
-        throw(DimensionMismatch("the reciprocal points and bands do not match!"))
+struct DispersionRelation{S,T}
+    path::ReciprocalPath{S}
+    bands::Matrix{T}
+    function DispersionRelation{S,T}(path, bands) where {S,T}
+        if length(interpolate(path)) != size(bands, 1)
+            throw(
+                DimensionMismatch(
+                    "the number of interpolated reciprocal points and bands are different!"
+                ),
+            )
+        end
+        return new(path, bands)
     end
-    T = reduce(promote_type, eltype.(values))
-    return DispersionRelation{T}(paths, values)
 end
+DispersionRelation(path::ReciprocalPath{S}, bands::AbstractMatrix{T}) where {S,T} =
+    DispersionRelation{S,T}(path, bands)
 const BandStructure = DispersionRelation
 const PhononSpectrum = DispersionRelation
 
-_interpolate(𝐚, 𝐛, density=100) = collect(
-    zip(
-        range(𝐚[1]; stop=𝐛[1], length=density),
-        range(𝐚[2]; stop=𝐛[2], length=density),
-        range(𝐚[3]; stop=𝐛[3], length=density),
-    ),
-)
+eachwavevector(dispersion::DispersionRelation) =
+    zip(interpolate(dispersion.path), eachrow(dispersion.bands))
+
+eachbranch(dispersion::DispersionRelation) = eachcol(dispersion.bands)
+
 function interpolate(path::ReciprocalPath)
-    start_node, end_node = specialpoints(path.bz)
-    return _interpolate(start_node, end_node, path.density)
-end
-interpolate(paths::ReciprocalPaths) = map(interpolate, eachpath(paths))
-
-eachpoint(paths::ReciprocalPaths) = (point for point in interpolate(paths))
-eachpoint(dispersion::DispersionRelation) =
-    zip(interpolate(dispersion.paths), dispersion.values)
-
-function eachpath(paths::ReciprocalPaths)
-    return Iterators.flatten(
-        map(1:(length(chain) - 1)) do i
-            ReciprocalPath(paths.bz, chain[i], chain[i + 1], paths.densities[i])
-        end for chain in eachchain(paths)
+    iter = (
+        range(aᵢ; stop=bᵢ, length=path.density) for
+        (aᵢ, bᵢ) in zip(path.start_node, path.end_node)
     )
+    return map(ReducedCoordinates, zip(iter...))
 end
 
-struct EachChain{T}
-    nodes::Vector{T}
-    breakpoints::Vector{Int64}
+function normalize_lengths(
+    paths::AbstractVector{<:ReciprocalPath}, recip_lattice::ReciprocalLattice
+)
+    g = MetricTensor(recip_lattice)
+    distances = collect(distance(path.start_node, g, path.end_node) for path in paths)
+    total_distance = sum(distances)
+    return distances ./= total_distance
 end
-
-Base.eltype(iter::EachChain) = typeof(iter.nodes)
-
-Base.length(iter::EachChain) = length(iter.breakpoints) - 1
-
-Base.IteratorSize(::Type{<:EachChain}) = Base.HasLength()
-
-function Base.iterate(iter::EachChain, state=1)
-    if state > length(iter)
-        return nothing
-    else
-        range = (iter.breakpoints[state] + 1):iter.breakpoints[state + 1]
-        return iter.nodes[range], state + 1
-    end
-end
-
-eachchain(paths::ReciprocalPaths) = EachChain(paths.nodes, paths.breakpoints)
