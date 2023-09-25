@@ -52,7 +52,7 @@ end
 specialpoints(bz::BrillouinZone) = _specialpoints(Val(Int(bz)))
 specialpoints(bz::Union{Integer,Symbol}) = specialpoints(BrillouinZone(bz))
 _specialpoints(::Val{10}) = (
-    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    Γ=ReducedCoordinates(0//1, 0, 0),
     A=ReducedCoordinates(0, 0, 1//2),
     K=ReducedCoordinates(2//3, 1//3, 0),
     H=ReducedCoordinates(2//3, 1//3, 1//2),
@@ -60,19 +60,19 @@ _specialpoints(::Val{10}) = (
     L=ReducedCoordinates(1//2, 0, 1//2),
 )
 _specialpoints(::Val{12}) = (
-    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    Γ=ReducedCoordinates(0//1, 0, 0),
     X=ReducedCoordinates(0, 1//2, 0),
     M=ReducedCoordinates(1//2, 1//2, 0),
     R=ReducedCoordinates(1//2, 1//2, 1//2),
 )
 _specialpoints(::Val{13}) = (
-    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    Γ=ReducedCoordinates(0//1, 0, 0),
     N=ReducedCoordinates(0, 1//2, 0),
     P=ReducedCoordinates(1//4, 1//4, 1//4),
     H=ReducedCoordinates(-1//2, 1//2, 1//2),
 )
 _specialpoints(::Val{14}) = (
-    Γ=ReducedCoordinates(zeros(Rational{Int64}, 3)),
+    Γ=ReducedCoordinates(0//1, 0, 0),
     X=ReducedCoordinates(0, 1//2, 1//2),
     L=ReducedCoordinates(1//2, 1//2, 1//2),
     W=ReducedCoordinates(1//4, 3//4, 1//2),
