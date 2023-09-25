@@ -128,4 +128,3 @@ function interpolate(path::ReciprocalPath)
     )
     return map(ReducedCoordinates, zip(iter...))
 end
-interpolate(dispersion::DispersionRelation) = collect(eachwavevector(dispersion))
