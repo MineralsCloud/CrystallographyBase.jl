@@ -6,9 +6,8 @@ function Base.show(io::IO, ::MIME"text/plain", A::ChangeOfBasis)
 end
 function Base.show(io::IO, ::MIME"text/plain", path::ReciprocalPath)
     println(io, summary(path))
-    println(io, " Brillouinzone(:", path.bz, ')')
-    print(
-        io, " from ", path.start_node, " to ", path.end_node, " (", path.density, " points)"
-    )
+    println(io, " from: ", path.start_node)
+    println(io, " to: ", path.end_node)
+    println(io, " number of points: ", path.density)
     return nothing
 end
