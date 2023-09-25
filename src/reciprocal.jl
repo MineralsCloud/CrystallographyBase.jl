@@ -97,6 +97,16 @@ function ReciprocalPath(bz::BrillouinZone, start_node::Symbol, end_node::Symbol,
     return ReciprocalPath(points[start_node], points[end_node], density)
 end
 
+function makepaths(bz::BrillouinZone, nodes, densities)
+    if densities isa Integer
+        densities = fill(densities, length(nodes) - 1)
+    end
+    @assert length(nodes) == length(densities) + 1
+    return map(Base.OneTo(length(nodes) - 1)) do i
+        ReciprocalPath(bz, nodes[i], nodes[i + 1], densities[i])
+    end
+end
+
 struct DispersionRelation{S,T}
     path::ReciprocalPath{S}
     bands::Matrix{T}
