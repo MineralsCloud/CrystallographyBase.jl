@@ -90,7 +90,7 @@ _suggestedpath(::Val{14}) = (:Γ, :X, :W, :K, :Γ, :L, :U, :W, :L, :K), (:U, :X)
 struct ReciprocalPath{T}
     start_node::ReducedCoordinates{T}
     end_node::ReducedCoordinates{T}
-    density::UInt64
+    density::Int64
 end
 function ReciprocalPath(bz::BrillouinZone, start_node::Symbol, end_node::Symbol, density)
     points = specialpoints(bz)
