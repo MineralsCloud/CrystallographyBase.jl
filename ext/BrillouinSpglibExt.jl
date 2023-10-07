@@ -3,7 +3,6 @@ module BrillouinSpglibExt
 # See https://github.com/thchr/Brillouin.jl/blob/v0.5.13/ext/BrillouinSpglibExt.jl
 using Brillouin: cartesianize!, points, latticize
 using CrystallographyBase: reciprocal, basisvectors
-using CrystallographyCore: eachbasisvector
 using Spglib: SpglibCell, get_dataset
 using StaticArrays: SVector
 

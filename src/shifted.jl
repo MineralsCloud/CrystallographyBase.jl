@@ -1,4 +1,4 @@
-import CrystallographyCore: basisvectors, eachbasisvector
+import CrystallographyCore: basisvectors
 
 export ShiftedLattice
 
@@ -9,10 +9,7 @@ end
 ShiftedLattice(original::AbstractMatrix, by::AbstractVector) =
     ShiftedLattice(Lattice(original), SVector{3}(by))
 
-basisvectors(lattice::ShiftedLattice) = Tuple(eachcol(lattice))
-
-eachbasisvector(lattice::ShiftedLattice) =
-    eachbasisvector(lattice.original) .+ Ref(lattice.by)
+# basisvectors(lattice::ShiftedLattice) = basisvectors(lattice.original) .+ Ref(lattice.by)
 
 Base.parent(lattice::ShiftedLattice) = lattice.original
 

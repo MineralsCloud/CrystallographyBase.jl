@@ -206,6 +206,6 @@ super(lattice_or_cell, factor::Integer) = super(lattice_or_cell, fill(factor, 3)
 
 shift(lattice::Lattice, 𝐱::AbstractVector) = Lattice(lattice .+ 𝐱)
 function shift(lattice::Lattice, x::Integer, y::Integer, z::Integer)
-    𝐚, 𝐛, 𝐜 = eachbasisvector(lattice)
+    𝐚, 𝐛, 𝐜 = basisvectors(lattice)
     return shift(lattice, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end

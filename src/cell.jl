@@ -40,6 +40,6 @@ function shift(cell::Cell, 𝐱::AbstractVector)
     return Cell(new_lattice, new_positions, cell.atoms)
 end
 function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
-    𝐚, 𝐛, 𝐜 = eachbasisvector(Lattice(cell))
+    𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
     return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end
