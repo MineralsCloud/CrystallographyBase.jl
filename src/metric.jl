@@ -49,7 +49,7 @@ distance(𝐚::AbstractVector, g::MetricTensor, 𝐛::AbstractVector) = g(𝐚, 
 
 Construct a `Lattice` from a `MetricTensor`.
 """
-Lattice(g::MetricTensor) = Lattice(latticeconstants(g))
+Lattice(g::MetricTensor) = Lattice(latticeconstants(g)...)
 
 """
     latticeconstants(g::MetricTensor)
