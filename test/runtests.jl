@@ -7,7 +7,7 @@ using UnitfulAtomic
     include("systems.jl")
     include("lattice.jl")
     include("supercell.jl")
-    # include("volume.jl")
+    include("volume.jl")
     include("metric.jl")
     include("reciprocal.jl")
     include("transform.jl")
