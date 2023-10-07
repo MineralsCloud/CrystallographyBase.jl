@@ -1,4 +1,4 @@
-using StaticArrays: SHermitianCompact
+using StaticArrays: SHermitianCompact, SDiagonal
 
 export MetricTensor, distance
 
@@ -64,6 +64,20 @@ function latticeconstants(g::MetricTensor)
     γ, β, α = acosd(ab / (a * b)), acosd(ac / (a * c)), acosd(bc / (b * c))
     return a, b, c, α, β, γ
 end
+
+# See https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/uniformscaling.jl#L130-L131
+Base.one(::Type{MetricTensor{T}}) where {T} =
+    MetricTensor(SDiagonal(one(T), one(T), one(T)))
+Base.one(g::MetricTensor) = one(typeof(g))
+
+# See https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/uniformscaling.jl#L132-L133
+Base.oneunit(::Type{MetricTensor{T}}) where {T} =
+    MetricTensor(SDiagonal(oneunit(T), oneunit(T), oneunit(T)))
+Base.oneunit(g::MetricTensor) = oneunit(typeof(g))
+
+# See https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/uniformscaling.jl#L134-L135
+Base.zero(::Type{MetricTensor{T}}) where {T} = MetricTensor(zeros(T, 3, 3))
+Base.zero(lattice::MetricTensor) = zero(typeof(lattice))
 
 Base.parent(g::MetricTensor) = g.data
 
