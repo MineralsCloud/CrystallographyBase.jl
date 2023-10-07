@@ -1,6 +1,24 @@
 using LinearAlgebra: dot, norm, diagm
 # using SymPy: symbols
 
+@testset "Test consistency of constructors of `MetricTensor`" begin
+    lattice = Lattice(
+        4.59983732u"angstrom", 4.59983732u"angstrom", 2.95921356u"angstrom", 90, 90, 90
+    )
+    𝐚, 𝐛, 𝐜 = basisvectors(lattice)
+    @test MetricTensor(lattice) ==
+        MetricTensor(𝐚, 𝐛, 𝐜) ==
+        MetricTensor(
+            4.59983732u"angstrom", 4.59983732u"angstrom", 2.95921356u"angstrom", 90, 90, 90
+        )
+    @test Lattice(MetricTensor(lattice)) == lattice
+    @testset "Test `zero`, `one`, and `oneunit`" begin
+        @test one(MetricTensor(lattice)) == MetricTensor(one(lattice))
+        @test oneunit(MetricTensor(lattice)) == MetricTensor(oneunit(lattice))
+        @test zero(MetricTensor(lattice)) == MetricTensor(zero(lattice))
+    end
+end
+
 @testset "Test lengths in a hexagonal lattice" begin
     g = MetricTensor(1, 1, 2, 90, 90, 120)  # Primitive hexagonal
     @test g ≈ MetricTensor([1, 0, 0], [-1//2, sqrt(3) / 2, 0], [0, 0, 2])
