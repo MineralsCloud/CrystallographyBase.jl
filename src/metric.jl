@@ -11,10 +11,8 @@ MetricTensor(data::AbstractMatrix) = MetricTensor(SHermitianCompact{3}(data))
 
 Generate a `MetricTensor` from the three basis vectors.
 """
-function MetricTensor(𝐚::AbstractVector, 𝐛::AbstractVector, 𝐜::AbstractVector)
-    𝐚𝐛𝐜 = (𝐚, 𝐛, 𝐜)
-    return MetricTensor([dot(𝐱, 𝐲) for 𝐱 in 𝐚𝐛𝐜, 𝐲 in 𝐚𝐛𝐜])
-end
+MetricTensor(𝐚::AbstractVector, 𝐛::AbstractVector, 𝐜::AbstractVector) =
+    MetricTensor([dot(𝐱, 𝐲) for 𝐱 in (𝐚, 𝐛, 𝐜), 𝐲 in (𝐚, 𝐛, 𝐜)])
 """
     MetricTensor(lattice::Lattice)
 
