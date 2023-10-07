@@ -6,15 +6,15 @@ using LinearAlgebra: norm
         0 1/2 0
         0 0 1
     ])
-    @test lattice * [2, 3, 1] == [1, 3 / 2, 1]  # Cartesian from reduced coordinates
-    @test lattice \ [1, 3 / 2, 1] == [2, 3, 1]  # Reduced from Cartesian coordinates
+    @test lattice([2, 3, 1]) == [1, 3 / 2, 1]  # Cartesian from reduced coordinates
+    @test inv(lattice)([1, 3 / 2, 1]) == [2, 3, 1]  # Reduced from Cartesian coordinates
     # Compared with "SeeK-path" example oC1 (SiTi)
     @testset "Base centered orthorhombic" begin
         a, b, c = 3.67939899, 4.15357986, 3.8236792350
         lattice = Lattice([a, -b, 0] / 2, [a, b, 0] / 2, [0, 0, c])
-        @test lattice * [1 / 2, 1 / 2, 1 / 2] == [1.8396994950, 0, 1.9118396175]  # Si
-        @test lattice * [0, 0, 0] == [0, 0, 0]  # Ti
-        @test lattice \ [1.8396994950, 0, 1.9118396175] ≈ [1 / 2, 1 / 2, 1 / 2]
+        @test lattice([1 / 2, 1 / 2, 1 / 2]) == [1.8396994950, 0, 1.9118396175]  # Si
+        @test lattice([0, 0, 0]) == [0, 0, 0]  # Ti
+        @test inv(lattice)([1.8396994950, 0, 1.9118396175]) ≈ [1 / 2, 1 / 2, 1 / 2]
     end
 end
 
@@ -54,59 +54,57 @@ end
     @testset "Simple orthorhombic Brillouin zone" begin
         a, b, c = 2, 3, 5
         recip_lattice = reciprocal(Lattice(a, b, c, 90, 90, 90))
-        @test recip_lattice * [1 / 2, 0, 0] == [1 / a, 0, 0] / 2
-        @test recip_lattice * [0, 1 / 2, 0] == [0, 1 / b, 0] / 2
-        @test recip_lattice * [0, 0, 1 / 2] == [0, 0, 1 / c] / 2
-        @test recip_lattice * [0, 1 / 2, 1 / 2] == [0, 1 / b, 1 / c] / 2
-        @test recip_lattice * [1 / 2, 1 / 2, 0] == [1 / a, 1 / b, 0] / 2
-        @test recip_lattice \ [1 / a, 0, 0] / 2 == [1 / 2, 0, 0]
-        @test recip_lattice \ [0, 1 / b, 0] / 2 == [0, 1 / 2, 0]
-        @test recip_lattice \ [0, 0, 1 / c] / 2 == [0, 0, 1 / 2]
-        @test recip_lattice \ [0, 1 / b, 1 / c] / 2 == [0, 1 / 2, 1 / 2]
-        @test recip_lattice \ [1 / a, 1 / b, 0] / 2 == [1 / 2, 1 / 2, 0]
+        @test recip_lattice([1 / 2, 0, 0]) == [1 / a, 0, 0] / 2
+        @test recip_lattice([0, 1 / 2, 0]) == [0, 1 / b, 0] / 2
+        @test recip_lattice([0, 0, 1 / 2]) == [0, 0, 1 / c] / 2
+        @test recip_lattice([0, 1 / 2, 1 / 2]) == [0, 1 / b, 1 / c] / 2
+        @test recip_lattice([1 / 2, 1 / 2, 0]) == [1 / a, 1 / b, 0] / 2
+        @test inv(recip_lattice)([1 / a, 0, 0] / 2) == [1 / 2, 0, 0]
+        @test inv(recip_lattice)([0, 1 / b, 0] / 2) == [0, 1 / 2, 0]
+        @test inv(recip_lattice)([0, 0, 1 / c] / 2) == [0, 0, 1 / 2]
+        @test inv(recip_lattice)([0, 1 / b, 1 / c] / 2) == [0, 1 / 2, 1 / 2]
+        @test inv(recip_lattice)([1 / a, 1 / b, 0] / 2) == [1 / 2, 1 / 2, 0]
     end
     # Compared with "SeeK-path" example oC1 (SiTi)
     # The results on http://lampx.tugraz.at/~hadley/ss1/bzones/orthorhombic_bc.php are wrong by a factor of 2.
     @testset "Base centered orthorhombic Brillouin zone" begin
         a, b, c = 3.67939899, 4.15357986, 3.8236792350
         recip_lattice = reciprocal(Lattice([a, -b, 0] / 2, [a, b, 0] / 2, [0, 0, c]))
-        @test recip_lattice * [-1 / 2, 1 / 2, 0] ≈ [0, 1 / b, 0] ≈ [0, 1.5127156619, 0] / 2π  # Y'
-        @test recip_lattice * [0, 0, 1 / 2] ≈
-            [0, 0, 1 / (2 * c)] ≈
-            [0, 0, 0.8216151148] / 2π  # Z
-        @test recip_lattice * [-1 / 2, 1 / 2, 1 / 2] ≈
-            [0, 1 / b, 1 / (2 * c)] ≈
+        @test recip_lattice([-1 / 2, 1 / 2, 0]) ≈ [0, 1 / b, 0] ≈ [0, 1.5127156619, 0] / 2π  # Y'
+        @test recip_lattice([0, 0, 1 / 2]) ≈ [0, 0, 1 / 2 / c] ≈ [0, 0, 0.8216151148] / 2π  # Z
+        @test recip_lattice([-1 / 2, 1 / 2, 1 / 2]) ≈
+            [0, 1 / b, 1 / 2 / c] ≈
             [0, 1.5127156619, 0.8216151148] / 2π  # T'
-        @test recip_lattice * [0, 1 / 2, 0] ≈
-            [1 / (2 * a), 1 / (2 * b), 0] ≈
+        @test recip_lattice([0, 1 / 2, 0]) ≈
+            [1 / 2 / a, 1 / 2 / b, 0] ≈
             [0.8538331021, 0.7563578310, 0] / 2π  # S
-        @test recip_lattice * [0, 1 / 2, 1 / 2] ≈
+        @test recip_lattice([0, 1 / 2, 1 / 2]) ≈
             [1 / a, 1 / b, 1 / c] / 2 ≈
             [0.8538331021, 0.7563578310, 0.8216151148] / 2π  # R
-        @test recip_lattice * [-0.4461772527, 0.5538227473, 1 / 2] ≈
+        @test recip_lattice([-0.4461772527, 0.5538227473, 1 / 2]) ≈
             [0.1838225731, 1.5127156619, 0.8216151148] / 2π  # E0
-        @test recip_lattice \ [0, 1 / b, 0] ≈ [-1 / 2, 1 / 2, 0]
-        @test recip_lattice \ [0, 0, 1 / (2 * c)] ≈ [0, 0, 1 / 2]
-        @test recip_lattice \ [0, 1 / b, 1 / (2 * c)] ≈ [-1 / 2, 1 / 2, 1 / 2]
-        @test recip_lattice \ [1 / (2 * a), 1 / (2 * b), 0] ≈ [0, 1 / 2, 0]
-        @test recip_lattice \ ([1 / a, 1 / b, 1 / c] / 2) ≈ [0, 1 / 2, 1 / 2]
-        @test recip_lattice \ ([0.1838225731, 1.5127156619, 0.8216151148] / 2π) ≈
+        @test inv(recip_lattice)([0, 1 / b, 0]) ≈ [-1 / 2, 1 / 2, 0]
+        @test inv(recip_lattice)([0, 0, 1 / 2 / c]) ≈ [0, 0, 1 / 2]
+        @test inv(recip_lattice)([0, 1 / b, 1 / 2 / c]) ≈ [-1 / 2, 1 / 2, 1 / 2]
+        @test inv(recip_lattice)([1 / 2 / a, 1 / 2 / b, 0]) ≈ [0, 1 / 2, 0]
+        @test inv(recip_lattice)([1 / a, 1 / b, 1 / c] / 2) ≈ [0, 1 / 2, 1 / 2]
+        @test inv(recip_lattice)([0.1838225731, 1.5127156619, 0.8216151148] / 2π) ≈
             [-0.4461772527, 0.5538227473, 1 / 2]
     end
     # See http://lampx.tugraz.at/~hadley/ss1/bzones/tetbc.php
     @testset "Body centered tetragonal Brillouin zone" begin
         a, c = 4, 6
         recip_lattice = reciprocal(Lattice([a, a, -c] / 2, [a, -a, c] / 2, [-a, a, c] / 2))
-        @test recip_lattice * [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice * [1 / 2, 0, 0] == [1 / a, 1 / a, 0] / 2
-        @test recip_lattice * [1 / 2, 1 / 2, -1 / 2] == [1 / a, 0, 0]
-        @test recip_lattice * [0, 1 / 2, 0] == [1 / a, 0, 1 / c] / 2
-        @test recip_lattice * ([1, 1, 1] / 4) == ([1 / a, 1 / a, 1 / c] / 2)
-        @test recip_lattice \ [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice \ ([1 / a, 1 / a, 0] / 2) == [1 / 2, 0, 0]
-        @test recip_lattice \ [1 / a, 0, 0] == [1 / 2, 1 / 2, -1 / 2]
-        @test recip_lattice \ ([1 / a, 0, 1 / c] / 2) ≈ [0, 1 / 2, 0]
-        @test recip_lattice \ ([1 / a, 1 / a, 1 / c] / 2) == [1, 1, 1] / 4
+        @test recip_lattice([0, 0, 0]) == [0, 0, 0]
+        @test recip_lattice([1 / 2, 0, 0]) == [1 / a, 1 / a, 0] / 2
+        @test recip_lattice([1 / 2, 1 / 2, -1 / 2]) == [1 / a, 0, 0]
+        @test recip_lattice([0, 1 / 2, 0]) == [1 / a, 0, 1 / c] / 2
+        @test recip_lattice([1, 1, 1] / 4) == ([1 / a, 1 / a, 1 / c] / 2)
+        @test inv(recip_lattice)([0, 0, 0]) == [0, 0, 0]
+        @test inv(recip_lattice)([1 / a, 1 / a, 0] / 2) == [1 / 2, 0, 0]
+        @test inv(recip_lattice)([1 / a, 0, 0]) == [1 / 2, 1 / 2, -1 / 2]
+        @test inv(recip_lattice)([1 / a, 0, 1 / c] / 2) ≈ [0, 1 / 2, 0]
+        @test inv(recip_lattice)([1 / a, 1 / a, 1 / c] / 2) == [1, 1, 1] / 4
     end
     # See http://lampx.tugraz.at/~hadley/ss1/bzones/hexagonal.php
     @testset "Simple hexagonal Brillouin zone" begin
@@ -114,29 +112,29 @@ end
         recip_lattice = reciprocal(
             Lattice([a, 0, 0], [a / 2, sqrt(3) / 2 * a, 0], [0, 0, c])
         )
-        @test recip_lattice * [0, 0, 0] == [0, 0, 0]  # Γ
-        @test recip_lattice * [1 / 2, 0, 0] ≈ [1 / a, -1 / sqrt(3) / a, 0] / 2  # M
-        @test recip_lattice * [0, 0, 1 / 2] ≈ [0, 0, 1 / c] / 2  # A
-        @test recip_lattice * [2 / 3, 1 / 3, 0] ≈ [2 / 3 / a, 0, 0]  # K
-        @test recip_lattice * [2 / 3, 1 / 3, 1 / 2] ≈ [2 / 3 / a, 0, 1 / 2 / c]  # H
-        @test recip_lattice * [1 / 2, 0, 1 / 2] ≈ [1 / a, -1 / sqrt(3) / a, 1 / c] / 2  # L
-        @test recip_lattice \ [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice \ ([1 / a, -1 / sqrt(3) / a, 0] / 2) ≈ [1 / 2, 0, 0]
-        @test recip_lattice \ ([0, 0, 1 / c] / 2) ≈ [0, 0, 1 / 2]
-        @test recip_lattice \ ([2 / 3 / a, 0, 0]) == [2 / 3, 1 / 3, 0]
-        @test recip_lattice \ ([2 / 3 / a, 0, 1 / 2 / c]) ≈ [2 / 3, 1 / 3, 1 / 2]
-        @test recip_lattice \ ([1 / a, -1 / sqrt(3) / a, 1 / c] / 2) ≈ [1 / 2, 0, 1 / 2]
+        @test recip_lattice([0, 0, 0]) == [0, 0, 0]  # Γ
+        @test recip_lattice([1 / 2, 0, 0]) ≈ [1 / a, -1 / sqrt(3) / a, 0] / 2  # M
+        @test recip_lattice([0, 0, 1 / 2]) ≈ [0, 0, 1 / c] / 2  # A
+        @test recip_lattice([2 / 3, 1 / 3, 0]) ≈ [2 / 3 / a, 0, 0]  # K
+        @test recip_lattice([2 / 3, 1 / 3, 1 / 2]) ≈ [2 / 3 / a, 0, 1 / 2 / c]  # H
+        @test recip_lattice([1 / 2, 0, 1 / 2]) ≈ [1 / a, -1 / sqrt(3) / a, 1 / c] / 2  # L
+        @test inv(recip_lattice)([0, 0, 0]) == [0, 0, 0]
+        @test inv(recip_lattice)([1 / a, -1 / sqrt(3) / a, 0] / 2) ≈ [1 / 2, 0, 0]
+        @test inv(recip_lattice)([0, 0, 1 / c] / 2) ≈ [0, 0, 1 / 2]
+        @test inv(recip_lattice)([2 / 3 / a, 0, 0]) == [2 / 3, 1 / 3, 0]
+        @test inv(recip_lattice)([2 / 3 / a, 0, 1 / 2 / c]) ≈ [2 / 3, 1 / 3, 1 / 2]
+        @test inv(recip_lattice)([1 / a, -1 / sqrt(3) / a, 1 / c] / 2) ≈ [1 / 2, 0, 1 / 2]
     end
     # See http://lampx.tugraz.at/~hadley/ss1/bzones/sc.php
     @testset "Simple cubic Brillouin zone" begin
         a = 4
         recip_lattice = reciprocal(Lattice(a, a, a, 90, 90, 90))
-        @test recip_lattice * [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice * [1 / 2, 1 / 2, 0] == [1 / a, 1 / a, 0] / 2
-        @test recip_lattice * [1 / 2, 1 / 2, 1 / 2] == [1 / a, 1 / a, 1 / a] / 2
-        @test recip_lattice \ [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice \ ([1 / a, 1 / a, 0] / 2) == [1 / 2, 1 / 2, 0]
-        @test recip_lattice \ ([1 / a, 1 / a, 1 / a] / 2) == [1 / 2, 1 / 2, 1 / 2]
+        @test recip_lattice([0, 0, 0]) == [0, 0, 0]
+        @test recip_lattice([1 / 2, 1 / 2, 0]) == [1 / a, 1 / a, 0] / 2
+        @test recip_lattice([1 / 2, 1 / 2, 1 / 2]) == [1 / a, 1 / a, 1 / a] / 2
+        @test inv(recip_lattice)([0, 0, 0]) == [0, 0, 0]
+        @test inv(recip_lattice)([1 / a, 1 / a, 0] / 2) == [1 / 2, 1 / 2, 0]
+        @test inv(recip_lattice)([1 / a, 1 / a, 1 / a] / 2) == [1 / 2, 1 / 2, 1 / 2]
     end
     # See http://lampx.tugraz.at/~hadley/ss1/bzones/fcc.php
     @testset "Face centered cubic Brillouin zone" begin
@@ -146,16 +144,16 @@ end
             0 1 1
             1 0 1
         ]) * a / 2)
-        @test recip_lattice * [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice * [0, 1 / 2, 1 / 2] == [0, 1 / a, 0]
-        @test recip_lattice * [1 / 2, 1 / 2, 1 / 2] == [1 / a, 1 / a, 1 / a] / 2
-        @test recip_lattice * [1 / 4, 3 / 4, 1 / 2] == [1 / 2 / a, 1 / a, 0]
-        @test recip_lattice * [1 / 4, 5 / 8, 5 / 8] == [1 / 2 / a, 2 / a, 1 / 2 / a] / 2
-        @test recip_lattice * [3 / 8, 3 / 4, 3 / 8] == [3 / 2 / a, 3 / 2 / a, 0] / 2
-        @test recip_lattice \ [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice \ [1 / 2 / a, 1 / a, 0] == [1 / 4, 3 / 4, 1 / 2]
-        @test recip_lattice \ [1 / 2 / a, 2 / a, 1 / 2 / a] / 2 == [1 / 4, 5 / 8, 5 / 8]
-        @test recip_lattice \ [3 / 2 / a, 3 / 2 / a, 0] / 2 == [3 / 8, 3 / 4, 3 / 8]
+        @test recip_lattice([0, 0, 0]) == [0, 0, 0]
+        @test recip_lattice([0, 1 / 2, 1 / 2]) == [0, 1 / a, 0]
+        @test recip_lattice([1 / 2, 1 / 2, 1 / 2]) == [1 / a, 1 / a, 1 / a] / 2
+        @test recip_lattice([1 / 4, 3 / 4, 1 / 2]) == [1 / 2 / a, 1 / a, 0]
+        @test recip_lattice([1 / 4, 5 / 8, 5 / 8]) == [1 / 2 / a, 2 / a, 1 / 2 / a] / 2
+        @test recip_lattice([3 / 8, 3 / 4, 3 / 8]) == [3 / 2 / a, 3 / 2 / a, 0] / 2
+        @test inv(recip_lattice)([0, 0, 0]) == [0, 0, 0]
+        @test inv(recip_lattice)([1 / 2 / a, 1 / a, 0]) == [1 / 4, 3 / 4, 1 / 2]
+        @test inv(recip_lattice)([1 / 2 / a, 2 / a, 1 / 2 / a] / 2) == [1 / 4, 5 / 8, 5 / 8]
+        @test inv(recip_lattice)([3 / 2 / a, 3 / 2 / a, 0] / 2) == [3 / 8, 3 / 4, 3 / 8]
     end
     # See http://lampx.tugraz.at/~hadley/ss1/bzones/bcc.php
     @testset "Body centered cubic Brillouin zone" begin
@@ -165,14 +163,14 @@ end
             1 1 -1
             -1 1 1
         ]) * a / 2)
-        @test recip_lattice * [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice * [-1 / 2, 1 / 2, 1 / 2] == [0, 0, 1 / a]
-        @test recip_lattice * [1 / 4, 1 / 4, 1 / 4] == [1 / a, 1 / a, 1 / a] / 2
-        @test recip_lattice * [0, 1 / 2, 0] == [0, 1 / a, 1 / a] / 2
-        @test recip_lattice \ [0, 0, 0] == [0, 0, 0]
-        @test recip_lattice \ [0, 0, 1 / a] == [-1 / 2, 1 / 2, 1 / 2]
-        @test recip_lattice \ ([1 / a, 1 / a, 1 / a] / 2) == [1 / 4, 1 / 4, 1 / 4]
-        @test recip_lattice \ ([0, 1 / a, 1 / a] / 2) == [0, 1 / 2, 0]
+        @test recip_lattice([0, 0, 0]) == [0, 0, 0]
+        @test recip_lattice([-1 / 2, 1 / 2, 1 / 2]) == [0, 0, 1 / a]
+        @test recip_lattice([1 / 4, 1 / 4, 1 / 4]) == [1 / a, 1 / a, 1 / a] / 2
+        @test recip_lattice([0, 1 / 2, 0]) == [0, 1 / a, 1 / a] / 2
+        @test inv(recip_lattice)([0, 0, 0]) == [0, 0, 0]
+        @test inv(recip_lattice)([0, 0, 1 / a]) == [-1 / 2, 1 / 2, 1 / 2]
+        @test inv(recip_lattice)([1 / a, 1 / a, 1 / a] / 2) == [1 / 4, 1 / 4, 1 / 4]
+        @test inv(recip_lattice)([0, 1 / a, 1 / a] / 2) == [0, 1 / 2, 0]
     end
 end
 
@@ -1115,7 +1113,7 @@ end
         ] * u"bohr^-1"
     @test maximum(
         norm.(
-            recip_lattice * crystal - cartesian for
+            recip_lattice(crystal) - cartesian for
             (crystal, cartesian) in zip(eachrow(qe_crystal), eachrow(qe_cartesian))
         ),
     ) < 5e-6u"bohr^-1"
