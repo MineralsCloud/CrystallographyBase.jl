@@ -20,7 +20,7 @@ cellvolume(cell::Cell) = cellvolume(Lattice(cell))
 
 Calculate the cell volume from a `MetricTensor`.
 """
-cellvolume(g::MetricTensor) = sqrt(_det(g.data))  # `sqrt` is always positive!
+cellvolume(g::MetricTensor) = sqrt(_det(parent(g)))  # `sqrt` is always positive!
 
 """
     crystaldensity(lattice::Lattice, atoms)
