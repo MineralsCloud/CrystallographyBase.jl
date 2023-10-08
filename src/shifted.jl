@@ -9,6 +9,12 @@ end
 
 # basisvectors(lattice::ShiftedLattice) = basisvectors(lattice.original) .+ Ref(lattice.by)
 
+shift(lattice::Lattice, 𝐱::AbstractVector) = Lattice(lattice .+ 𝐱)
+function shift(lattice::Lattice, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(lattice)
+    return shift(lattice, x * 𝐚 + y * 𝐛 + z * 𝐜)
+end
+
 Base.parent(lattice::ShiftedLattice) = lattice.original
 
 Base.size(::ShiftedLattice) = (3, 3)
