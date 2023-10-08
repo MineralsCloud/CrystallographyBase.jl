@@ -1,5 +1,5 @@
 using LinearAlgebra: dot, norm, diagm
-using SymPy: symbols
+using SymEngine: symbols
 
 @testset "Test consistency of constructors of `MetricTensor`" begin
     lattice = Lattice(
@@ -39,7 +39,12 @@ end
 end
 
 @testset "Test symbolic calculation" begin
-    a, c = symbols("a, c"; positive=true)
-    @test MetricTensor(a, a, c, 90, 90, 120) ==
-        MetricTensor([a^2 -0.5*a^2 0; -0.5*a^2 a^2 0; 0 0 c^2])  # Primitive hexagonal
+    a, c = symbols(:a), symbols(:c)
+    @test iszero(
+        MetricTensor(a, a, c, 90, 90, 120) - MetricTensor([
+            a^2 -0.5a^2 0
+            -0.5a^2 a^2 0
+            0 0 c^2
+        ]),
+    )  # Primitive hexagonal
 end
