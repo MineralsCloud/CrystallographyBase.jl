@@ -25,15 +25,7 @@ function shift(shifted::ShiftedLattice, x::Integer, y::Integer, z::Integer)
     return shift(shifted, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end
 
-Base.parent(lattice::ShiftedLattice) = lattice.original
-
-Base.size(::ShiftedLattice) = (3, 3)
-
-Base.getindex(lattice::ShiftedLattice, i::Int) = getindex(parent(lattice), i)
-
-Base.setindex!(lattice::ShiftedLattice, v, i::Int) = setindex!(parent(lattice), v, i)
-
-Base.IndexStyle(::Type{<:ShiftedLattice}) = IndexLinear()
+Base.parent(shifted::ShiftedLattice) = shifted.original
 
 function Base.:*(lattice::ShiftedLattice, x::AbstractVector)
     return parent(lattice) * x + lattice.by
