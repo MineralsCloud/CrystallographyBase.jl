@@ -46,7 +46,7 @@ lengthof(𝐚::ReducedCoordinates, g::MetricTensor) = sqrt(dot(𝐚, g, 𝐚))
 
 Get the distance between two coordinates using a `MetricTensor`.
 """
-distance(𝐚::ReducedCoordinates, g::MetricTensor, 𝐛::ReducedCoordinates) = lengthof(𝐚 - 𝐛, g)
+distance(𝐚::ReducedCoordinates, 𝐛::ReducedCoordinates, g::MetricTensor) = lengthof(𝐚 - 𝐛, g)
 
 """
     Lattice(g::MetricTensor)
