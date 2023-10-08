@@ -32,10 +32,10 @@ julia = "1.6"
 
 [extras]
 Mendeleev = "c116f080-063d-490a-9873-2b5b2cce4c34"
-SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+SymEngine = "123dc426-2d89-5057-bbad-38513e3affd8"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulAtomic = "a7773ee8-282e-5fa2-be4e-bd808c38a91a"
 
 [targets]
-test = ["Mendeleev", "SymPy", "Test", "Unitful", "UnitfulAtomic"]
+test = ["Mendeleev", "SymEngine", "Test", "Unitful", "UnitfulAtomic"]
