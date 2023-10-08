@@ -1,4 +1,4 @@
-using StaticArrays: SHermitianCompact
+using StaticArrays: SHermitianCompact, SDiagonal
 
 export MetricTensor, distance
 
@@ -11,10 +11,8 @@ MetricTensor(data::AbstractMatrix) = MetricTensor(SHermitianCompact{3}(data))
 
 Generate a `MetricTensor` from the three basis vectors.
 """
-function MetricTensor(𝐚::AbstractVector, 𝐛::AbstractVector, 𝐜::AbstractVector)
-    𝐚𝐛𝐜 = (𝐚, 𝐛, 𝐜)
-    return MetricTensor([dot(𝐱, 𝐲) for 𝐱 in 𝐚𝐛𝐜, 𝐲 in 𝐚𝐛𝐜])
-end
+MetricTensor(𝐚::AbstractVector, 𝐛::AbstractVector, 𝐜::AbstractVector) =
+    MetricTensor([dot(𝐱, 𝐲) for 𝐱 in (𝐚, 𝐛, 𝐜), 𝐲 in (𝐚, 𝐛, 𝐜)])
 """
     MetricTensor(lattice::Lattice)
 
@@ -51,7 +49,7 @@ distance(𝐚::AbstractVector, g::MetricTensor, 𝐛::AbstractVector) = g(𝐚, 
 
 Construct a `Lattice` from a `MetricTensor`.
 """
-Lattice(g::MetricTensor) = Lattice(latticeconstants(g))
+Lattice(g::MetricTensor) = Lattice(latticeconstants(g)...)
 
 """
     latticeconstants(g::MetricTensor)
@@ -64,6 +62,20 @@ function latticeconstants(g::MetricTensor)
     γ, β, α = acosd(ab / (a * b)), acosd(ac / (a * c)), acosd(bc / (b * c))
     return a, b, c, α, β, γ
 end
+
+# See https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/uniformscaling.jl#L130-L131
+Base.one(::Type{MetricTensor{T}}) where {T} =
+    MetricTensor(SDiagonal(one(T), one(T), one(T)))
+Base.one(g::MetricTensor) = one(typeof(g))
+
+# See https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/uniformscaling.jl#L132-L133
+Base.oneunit(::Type{MetricTensor{T}}) where {T} =
+    MetricTensor(SDiagonal(oneunit(T), oneunit(T), oneunit(T)))
+Base.oneunit(g::MetricTensor) = oneunit(typeof(g))
+
+# See https://github.com/JuliaLang/julia/blob/v1.10.0-beta1/stdlib/LinearAlgebra/src/uniformscaling.jl#L134-L135
+Base.zero(::Type{MetricTensor{T}}) where {T} = MetricTensor(zeros(T, 3, 3))
+Base.zero(lattice::MetricTensor) = zero(typeof(lattice))
 
 Base.parent(g::MetricTensor) = g.data
 
