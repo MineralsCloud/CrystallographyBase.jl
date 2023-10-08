@@ -37,14 +37,14 @@ end
 """
     lengthof(𝐚::ReducedCoordinates, g::MetricTensor)
 
-Get the length of coordinates `𝐚`.
+Get the length of an atomic coordinates.
 """
 lengthof(𝐚::ReducedCoordinates, g::MetricTensor) = sqrt(dot(𝐚, g, 𝐚))
 
 """
-    distance(𝐚::ReducedCoordinates, g::MetricTensor, 𝐛::ReducedCoordinates)
+    distance(𝐚::ReducedCoordinates, 𝐛::ReducedCoordinates, g::MetricTensor)
 
-Get the distance between two coordinates using a `MetricTensor`.
+Get the distance between two atomic coordinates.
 """
 distance(𝐚::ReducedCoordinates, 𝐛::ReducedCoordinates, g::MetricTensor) = lengthof(𝐚 - 𝐛, g)
 
