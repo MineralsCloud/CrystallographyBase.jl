@@ -3,7 +3,7 @@ using StructEquality: @struct_hash_equal_isequal, @struct_hash_equal_isequal_isa
 
 import CrystallographyCore: basisvectors, natoms, atomtypes
 
-export ShiftedLattice
+export ShiftedLattice, ShiftedCell, shift
 
 @struct_hash_equal_isequal_isapprox struct ShiftedLattice{T} <: AbstractLattice{T}
     original::Lattice{T}
