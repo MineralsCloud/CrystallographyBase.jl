@@ -19,8 +19,8 @@ end
 
 edge(A⃗, B⃗) = hcat(([Aᵢ, Bᵢ] for (Aᵢ, Bᵢ) in zip(A⃗, B⃗))...)
 
-function edges(lattice::Lattice, O⃗=zeros(eltype(lattice), 3))
-    O⃗, A⃗, B⃗, C⃗, A⃗B⃗, A⃗C⃗, B⃗C⃗, A⃗B⃗C⃗ = vertices(lattice, O⃗)
+function edges(lattice::AbstractLattice)
+    O⃗, A⃗, B⃗, C⃗, A⃗B⃗, A⃗C⃗, B⃗C⃗, A⃗B⃗C⃗ = vertices(lattice)
     return (
         edge(O⃗, A⃗),
         edge(O⃗, C⃗),
