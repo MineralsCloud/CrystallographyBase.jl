@@ -9,7 +9,10 @@ end
 
 # basisvectors(lattice::ShiftedLattice) = basisvectors(lattice.original) .+ Ref(lattice.by)
 
-shift(lattice::Lattice, 𝐱::AbstractVector) = Lattice(lattice .+ 𝐱)
+function shift(lattice::Lattice, 𝐱::AbstractVector)
+    T = Base.promote_eltype(lattice, 𝐱)
+    return ShiftedLattice(convert(Lattice{T}, lattice), SVector{3,T}(𝐱))
+end
 function shift(lattice::Lattice, x::Integer, y::Integer, z::Integer)
     𝐚, 𝐛, 𝐜 = basisvectors(lattice)
     return shift(lattice, x * 𝐚 + y * 𝐛 + z * 𝐜)
