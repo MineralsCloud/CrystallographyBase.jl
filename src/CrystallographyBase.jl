@@ -16,12 +16,12 @@ include("systems.jl")
 include("lattice.jl")
 include("cell.jl")
 include("reciprocal.jl")
-include("geometry.jl")
 include("metric.jl")
 include("volume.jl")
 include("transform.jl")
 include("eachatomgroup.jl")
 include("shifted.jl")
+include("geometry.jl")
 include("show.jl")
 
 end

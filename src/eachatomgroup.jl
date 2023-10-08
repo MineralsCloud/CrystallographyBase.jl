@@ -1,21 +1,21 @@
-using CrystallographyCore: EachAtom
+using CrystallographyCore: AbstractCell, EachAtom
 
 import CrystallographyCore: eachatom
 
 export eachatomgroup
 
-struct AtomGroup{A,B}
+struct AtomGroup{N,A,B}
     atom::A
-    positions::Vector{B}
+    positions::NTuple{N,B}
 end
 
 eachatom(group::AtomGroup) =
-    EachAtom(fill(group.atom, length(group.positions)), group.positions)
+    EachAtom(ntuple(Returns(group.atom), length(group.positions)), group.positions)
 
-function eachatomgroup(cell::Cell)
+function eachatomgroup(cell::AbstractCell)
     types = atomtypes(cell)
     return Iterators.map(types) do type
         indices = findall(==(type), cell.atoms)
-        AtomGroup(type, cell.positions[indices])
+        AtomGroup(type, Tuple(cell.positions[indices]))
     end
 end

@@ -1,26 +1,70 @@
-import CrystallographyCore: basisvectors
+using CrystallographyCore: AbstractCell, Inverted
+using StructEquality: @struct_hash_equal_isequal, @struct_hash_equal_isequal_isapprox
 
-export ShiftedLattice
+import CrystallographyCore: basisvectors, natoms, atomtypes
 
-struct ShiftedLattice{T,S} <: AbstractLattice{T}
+export ShiftedLattice, ShiftedCell, shift
+
+@struct_hash_equal_isequal_isapprox struct ShiftedLattice{T} <: AbstractLattice{T}
     original::Lattice{T}
-    by::SVector{3,S}
+    by::SVector{3,T}
 end
-ShiftedLattice(original::AbstractMatrix, by::AbstractVector) =
-    ShiftedLattice(Lattice(original), SVector{3}(by))
 
-# basisvectors(lattice::ShiftedLattice) = basisvectors(lattice.original) .+ Ref(lattice.by)
+basisvectors(shifted::ShiftedLattice) = basisvectors(parent(shifted))
 
-Base.parent(lattice::ShiftedLattice) = lattice.original
+function shift(lattice::Lattice, 𝐱::AbstractVector)
+    T = Base.promote_eltype(lattice, 𝐱)
+    return ShiftedLattice(convert(Lattice{T}, lattice), SVector{3,T}(𝐱))
+end
+shift(shifted::ShiftedLattice, 𝐱::AbstractVector) = shift(parent(shifted), shifted.by .+ 𝐱)
+function shift(lattice::Lattice, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(lattice)
+    return shift(lattice, x * 𝐚 + y * 𝐛 + z * 𝐜)
+end
+function shift(shifted::ShiftedLattice, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(shifted)
+    return shift(shifted, x * 𝐚 + y * 𝐛 + z * 𝐜)
+end
 
-Base.size(::ShiftedLattice) = (3, 3)
+Base.parent(shifted::ShiftedLattice) = shifted.original
 
-Base.getindex(lattice::ShiftedLattice, i::Int) = getindex(parent(lattice), i)
+# See https://github.com/MineralsCloud/CrystallographyCore.jl/blob/d9b808c/src/transform.jl#L10C80-L10C80
+(shifted::ShiftedLattice)(reduced::AbstractVector) = parent(shifted)(reduced) .+ shifted.by
 
-Base.setindex!(lattice::ShiftedLattice, v, i::Int) = setindex!(parent(lattice), v, i)
+(inverted::Inverted{<:ShiftedLattice})(cartesian::AbstractVector) =
+    inv(parent(inverted.lattice))(cartesian .- inverted.lattice.by)
 
-Base.IndexStyle(::Type{<:ShiftedLattice}) = IndexLinear()
+@struct_hash_equal_isequal mutable struct ShiftedCell{L,P,T} <: AbstractCell
+    original::Cell{L,P,T}
+    by::SVector{3,L}
+end
 
-function Base.:*(lattice::ShiftedLattice, x::AbstractVector)
-    return parent(lattice) * x + lattice.by
+Base.parent(shifted::ShiftedCell) = shifted.original
+
+natoms(shifted::ShiftedCell) = length(parent(shifted).atoms)
+
+atomtypes(shifted::ShiftedCell) = unique(parent(shifted).atoms)
+
+ShiftedLattice(shifted::ShiftedCell) = shift(Lattice(parent(shifted)), shifted.by)
+
+function shift(cell::Cell{L}, 𝐱::AbstractVector{X}) where {L,X}
+    T = Base.promote_type(L, X)
+    return ShiftedCell(
+        Cell(convert(Lattice{T}, Lattice(cell)), cell.positions, cell.atoms),
+        SVector{3,T}(𝐱),
+    )
+end
+function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
+    return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
+end
+
+function Base.getproperty(shifted::ShiftedCell, name::Symbol)
+    if name in (:positions, :atoms)
+        return getproperty(parent(shifted), name)
+    elseif name == :lattice
+        return ShiftedLattice(shifted)
+    else
+        return getfield(shifted, name)
+    end
 end
