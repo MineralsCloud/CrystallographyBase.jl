@@ -44,6 +44,7 @@ reciprocal
 
 ```@docs
 MetricTensor
+lengthof
 distance
 ```
 
