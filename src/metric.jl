@@ -34,8 +34,6 @@ function MetricTensor(a, b, c, α, β, γ)
     return MetricTensor(SHermitianCompact(SVector(a^2, g₁₂, g₁₃, b^2, g₂₃, c^2)))
 end
 
-(g::MetricTensor)(𝐚::AbstractVector) = sqrt(dot(𝐚, g, 𝐚))
-(g::MetricTensor)(𝐚::AbstractVector, 𝐛::AbstractVector) = g(𝐚 - 𝐛)
 
 """
     distance(𝐚::AbstractVector, g::MetricTensor, 𝐛::AbstractVector)
