@@ -35,7 +35,7 @@ end
     g = MetricTensor(1, 1, 2, 90, 90, 120)  # Primitive hexagonal
     a = ReducedCoordinates(1, 1, 1)
     b = ReducedCoordinates(1//3, 1//3, 1//2)
-    @test distance(a, g, b)^2 == 13 / 9
+    @test distance(a, b, g)^2 == 13 / 9
 end
 
 @testset "Test symbolic calculation" begin
