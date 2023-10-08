@@ -2,12 +2,10 @@ import CrystallographyCore: basisvectors
 
 export ShiftedLattice
 
-struct ShiftedLattice{T,S} <: AbstractLattice{T}
+struct ShiftedLattice{T} <: AbstractLattice{T}
     original::Lattice{T}
-    by::SVector{3,S}
+    by::SVector{3,T}
 end
-ShiftedLattice(original::AbstractMatrix, by::AbstractVector) =
-    ShiftedLattice(Lattice(original), SVector{3}(by))
 
 # basisvectors(lattice::ShiftedLattice) = basisvectors(lattice.original) .+ Ref(lattice.by)
 
