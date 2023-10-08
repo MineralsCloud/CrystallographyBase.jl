@@ -54,9 +54,14 @@ function shift(cell::Cell{L}, 𝐱::AbstractVector{X}) where {L,X}
         SVector{3,T}(𝐱),
     )
 end
+shift(shifted::ShiftedCell, 𝐱::AbstractVector) = shift(parent(shifted), shifted.by .+ 𝐱)
 function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
     𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
     return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
+end
+function shift(shifted::ShiftedCell, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(ShiftedLattice(shifted))
+    return shift(shifted, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end
 
 function Base.getproperty(shifted::ShiftedCell, name::Symbol)
