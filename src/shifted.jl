@@ -58,3 +58,13 @@ function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
     𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
     return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end
+
+function Base.getproperty(shifted::ShiftedCell, name::Symbol)
+    if name in (:positions, :atoms)
+        return getproperty(parent(shifted), name)
+    elseif name == :lattice
+        return ShiftedLattice(shifted)
+    else
+        return getfield(shifted, name)
+    end
+end
