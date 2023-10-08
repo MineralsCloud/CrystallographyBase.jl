@@ -26,7 +26,7 @@ latticesystem
 latticeconstants
 periodicity
 Cell
-supercell
+super
 eachatom
 ```
 
@@ -51,8 +51,6 @@ distance
 ### Transformations
 
 ```@docs
-CartesianFromFractional
-FractionalFromCartesian
 PrimitiveFromStandardized
 StandardizedFromPrimitive
 ```
