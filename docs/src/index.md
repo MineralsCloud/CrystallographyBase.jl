@@ -72,7 +72,7 @@ Depth = 3
 ## Library outline
 
 ```@contents
-Pages = ["lib/public.md", "lib/internals.md"]
+Pages = ["lib/public.md", "lib/internals/lattices.md"]
 ```
 
 ### [Index](@id main-index)
