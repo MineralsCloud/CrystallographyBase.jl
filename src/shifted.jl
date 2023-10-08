@@ -1,3 +1,4 @@
+using CrystallographyCore: Inverted
 using StructEquality: @struct_hash_equal_isequal_isapprox
 
 import CrystallographyCore: basisvectors
@@ -29,3 +30,6 @@ Base.parent(shifted::ShiftedLattice) = shifted.original
 
 # See https://github.com/MineralsCloud/CrystallographyCore.jl/blob/d9b808c/src/transform.jl#L10C80-L10C80
 (shifted::ShiftedLattice)(reduced::AbstractVector) = parent(shifted)(reduced) .+ shifted.by
+
+(inverted::Inverted{<:ShiftedLattice})(cartesian::AbstractVector) =
+    inv(parent(inverted.lattice))(cartesian .- inverted.lattice.by)
