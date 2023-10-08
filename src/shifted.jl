@@ -1,7 +1,7 @@
 using CrystallographyCore: AbstractCell, Inverted
 using StructEquality: @struct_hash_equal_isequal, @struct_hash_equal_isequal_isapprox
 
-import CrystallographyCore: basisvectors
+import CrystallographyCore: basisvectors, natoms, atomtypes
 
 export ShiftedLattice
 
@@ -37,4 +37,18 @@ Base.parent(shifted::ShiftedLattice) = shifted.original
 @struct_hash_equal_isequal mutable struct ShiftedCell{L,P,T} <: AbstractCell
     original::Cell{L,P,T}
     by::SVector{3,L}
+end
+
+Base.parent(shifted::ShiftedCell) = shifted.original
+
+natoms(shifted::ShiftedCell) = length(parent(shifted).atoms)
+
+atomtypes(shifted::ShiftedCell) = unique(parent(shifted).atoms)
+
+ShiftedLattice(shifted::ShiftedCell) = shift(Lattice(parent(shifted)), shifted.by)
+
+shift(cell::Cell, 𝐱::AbstractVector) = ShiftedCell(cell, 𝐱)
+function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
+    return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end
