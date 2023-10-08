@@ -15,9 +15,14 @@ function shift(lattice::Lattice, 𝐱::AbstractVector)
     T = Base.promote_eltype(lattice, 𝐱)
     return ShiftedLattice(convert(Lattice{T}, lattice), SVector{3,T}(𝐱))
 end
+shift(shifted::ShiftedLattice, 𝐱::AbstractVector) = shift(parent(shifted), shifted.by .+ 𝐱)
 function shift(lattice::Lattice, x::Integer, y::Integer, z::Integer)
     𝐚, 𝐛, 𝐜 = basisvectors(lattice)
     return shift(lattice, x * 𝐚 + y * 𝐛 + z * 𝐜)
+end
+function shift(shifted::ShiftedLattice, x::Integer, y::Integer, z::Integer)
+    𝐚, 𝐛, 𝐜 = basisvectors(shifted)
+    return shift(shifted, x * 𝐚 + y * 𝐛 + z * 𝐜)
 end
 
 Base.parent(lattice::ShiftedLattice) = lattice.original
