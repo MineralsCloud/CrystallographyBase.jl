@@ -32,14 +32,3 @@ function super(cell::Cell, factors::AbstractMatrix{<:Integer})
     new_lattice = super(cell.lattice, factors)
     return Cell(new_lattice, new_positions, new_atoms)
 end
-
-function shift(cell::Cell, 𝐱::AbstractVector)
-    new_lattice = shift(Lattice(cell), 𝐱)
-    new_positions = Ref(ShiftedLattice(Lattice(cell), 𝐱)) .* cell.positions
-    new_positions = Ref(new_lattice) .\ new_positions
-    return Cell(new_lattice, new_positions, cell.atoms)
-end
-function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
-    𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
-    return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
-end
