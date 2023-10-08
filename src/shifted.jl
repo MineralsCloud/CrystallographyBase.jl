@@ -9,7 +9,7 @@ export ShiftedLattice
     by::SVector{3,T}
 end
 
-# basisvectors(lattice::ShiftedLattice) = basisvectors(lattice.original) .+ Ref(lattice.by)
+basisvectors(shifted::ShiftedLattice) = basisvectors(parent(shifted))
 
 function shift(lattice::Lattice, 𝐱::AbstractVector)
     T = Base.promote_eltype(lattice, 𝐱)
