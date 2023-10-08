@@ -47,7 +47,13 @@ atomtypes(shifted::ShiftedCell) = unique(parent(shifted).atoms)
 
 ShiftedLattice(shifted::ShiftedCell) = shift(Lattice(parent(shifted)), shifted.by)
 
-shift(cell::Cell, 𝐱::AbstractVector) = ShiftedCell(cell, 𝐱)
+function shift(cell::Cell{L}, 𝐱::AbstractVector{X}) where {L,X}
+    T = Base.promote_type(L, X)
+    return ShiftedCell(
+        Cell(convert(Lattice{T}, Lattice(cell)), cell.positions, cell.atoms),
+        SVector{3,T}(𝐱),
+    )
+end
 function shift(cell::Cell, x::Integer, y::Integer, z::Integer)
     𝐚, 𝐛, 𝐜 = basisvectors(Lattice(cell))
     return shift(cell, x * 𝐚 + y * 𝐛 + z * 𝐜)
