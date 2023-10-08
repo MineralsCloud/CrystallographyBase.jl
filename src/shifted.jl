@@ -27,6 +27,5 @@ end
 
 Base.parent(shifted::ShiftedLattice) = shifted.original
 
-function Base.:*(lattice::ShiftedLattice, x::AbstractVector)
-    return parent(lattice) * x + lattice.by
-end
+# See https://github.com/MineralsCloud/CrystallographyCore.jl/blob/d9b808c/src/transform.jl#L10C80-L10C80
+(shifted::ShiftedLattice)(reduced::AbstractVector) = parent(shifted)(reduced) .+ shifted.by
