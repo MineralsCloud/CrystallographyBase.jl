@@ -37,7 +37,7 @@ function edges(lattice::AbstractLattice)
     )
 end
 
-function faces(lattice::Lattice, O⃗=zeros(eltype(lattice), 3))
-    verts = vertices(lattice, O⃗)
-    return map(face -> [verts[i] for i in face], FACES)
+function faces(lattice::AbstractLattice)
+    verts = vertices(lattice)
+    return Tuple(Tuple(verts[i] for i in face) for face in FACES)
 end
