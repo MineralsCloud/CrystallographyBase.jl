@@ -1,8 +1,10 @@
+using StructEquality: @struct_hash_equal_isequal_isapprox
+
 import CrystallographyCore: basisvectors
 
 export ShiftedLattice
 
-struct ShiftedLattice{T} <: AbstractLattice{T}
+@struct_hash_equal_isequal_isapprox struct ShiftedLattice{T} <: AbstractLattice{T}
     original::Lattice{T}
     by::SVector{3,T}
 end
