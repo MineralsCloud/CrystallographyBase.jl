@@ -1,6 +1,6 @@
 using StaticArrays: SHermitianCompact, SDiagonal
 
-export MetricTensor, distance
+export MetricTensor, lengthof, distance
 
 struct MetricTensor{T} <: AbstractMatrix{T}
     data::SHermitianCompact{3,T,6}
@@ -34,6 +34,12 @@ function MetricTensor(a, b, c, α, β, γ)
     return MetricTensor(SHermitianCompact(SVector(a^2, g₁₂, g₁₃, b^2, g₂₃, c^2)))
 end
 
+"""
+    lengthof(𝐚::ReducedCoordinates, g::MetricTensor)
+
+Get the length of coordinates `𝐚`.
+"""
+lengthof(𝐚::ReducedCoordinates, g::MetricTensor) = sqrt(dot(𝐚, g, 𝐚))
 
 """
     distance(𝐚::AbstractVector, g::MetricTensor, 𝐛::AbstractVector)
