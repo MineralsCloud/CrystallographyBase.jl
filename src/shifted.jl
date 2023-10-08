@@ -1,5 +1,5 @@
-using CrystallographyCore: Inverted
-using StructEquality: @struct_hash_equal_isequal_isapprox
+using CrystallographyCore: AbstractCell, Inverted
+using StructEquality: @struct_hash_equal_isequal, @struct_hash_equal_isequal_isapprox
 
 import CrystallographyCore: basisvectors
 
@@ -33,3 +33,8 @@ Base.parent(shifted::ShiftedLattice) = shifted.original
 
 (inverted::Inverted{<:ShiftedLattice})(cartesian::AbstractVector) =
     inv(parent(inverted.lattice))(cartesian .- inverted.lattice.by)
+
+@struct_hash_equal_isequal mutable struct ShiftedCell{L,P,T} <: AbstractCell
+    original::Cell{L,P,T}
+    by::SVector{3,L}
+end
