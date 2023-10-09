@@ -20,7 +20,7 @@ function super(cell::Cell, factors::AbstractMatrix{<:Integer})
     l, m, n = diag(factors)
     𝐚, 𝐛, 𝐜 = eachcol(Matrix(I, 3, 3))
     new_atoms = eltype(cell.atoms)[]
-    new_positions = eltype(cell.positions)[]
+    new_positions = float(eltype(cell.positions))[]
     for (atom, position) in eachatom(cell)
         for (i, j, k) in Iterators.product(0:(l - 1), 0:(m - 1), 0:(n - 1))
             # See https://doi.org/10.1186/s13321-016-0129-3 and #111
