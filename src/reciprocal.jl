@@ -142,7 +142,7 @@ function normalize_lengths(
     paths::AbstractVector{<:ReciprocalPath}, recip_lattice::ReciprocalLattice
 )
     g = MetricTensor(recip_lattice)
-    distances = collect(distance(path.start_node, g, path.end_node) for path in paths)
+    distances = collect(distance(path.start_node, path.end_node, g) for path in paths)
     total_distance = sum(distances)
     return distances ./= total_distance
 end
