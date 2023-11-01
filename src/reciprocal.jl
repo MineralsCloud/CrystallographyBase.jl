@@ -90,7 +90,15 @@ struct ReciprocalPath{T}
     start_node::ReducedCoordinates{T}
     end_node::ReducedCoordinates{T}
     density::Int64
+    function ReciprocalPath{T}(start_node, end_node, density) where {T}
+        if density < 2
+            throw(ArgumentError("you need at least two points to define a path!"))
+        end
+        return new(start_node, end_node, density)
+    end
 end
+ReciprocalPath(start_node, end_node, density) =
+    ReciprocalPath{Base.promote_eltype(start_node, end_node)}(start_node, end_node, density)
 function ReciprocalPath(bz::BrillouinZone, start_node::Symbol, end_node::Symbol, density)
     points = specialpoints(bz)
     return ReciprocalPath(points[start_node], points[end_node], density)
