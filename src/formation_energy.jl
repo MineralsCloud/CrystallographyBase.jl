@@ -1,7 +1,21 @@
-export formation_energy
+export ReferenceAtom, formation_energy
 
 """
-    formation_energy(cell, energy, component_energies)
+    ReferenceAtom(label, energy)
+
+An atom label paired with its reference energy per atom.
+
+# Arguments
+- `label`: The atomic label (e.g. a `Symbol`, `String`, or custom type).
+- `energy`: The reference energy per atom.
+"""
+struct ReferenceAtom{L,E}
+    label::L
+    energy::E
+end
+
+"""
+    formation_energy(cell::Cell, energy, component_energies)
 
 Calculate the formation energy per atom for a `Cell`.
 
@@ -19,11 +33,24 @@ total number of atoms.
 - `cell`: A `Cell` whose `atoms` field provides the atom labels.
 - `energy`: Total energy of the compound.
 - `component_energies`: A mapping from atom label to reference energy per atom.
-
-# Returns
-Formation energy per atom.
 """
 function formation_energy(cell::Cell, energy, component_energies)
     ref_sum = sum(component_energies[atom] for atom in cell.atoms)
+    return (energy - ref_sum) / natoms(cell)
+end
+
+"""
+    formation_energy(cell::Cell{L,P,<:ReferenceAtom}, energy)
+
+Calculate the formation energy per atom when each atom in `cell` is a
+[`ReferenceAtom`](@ref), so that reference energies are embedded in the cell
+itself and no separate `component_energies` mapping is required.
+
+# Arguments
+- `cell`: A `Cell` whose `atoms` are [`ReferenceAtom`](@ref) values.
+- `energy`: Total energy of the compound.
+"""
+function formation_energy(cell::Cell{L,P,<:ReferenceAtom}, energy) where {L,P}
+    ref_sum = sum(atom.energy for atom in cell.atoms)
     return (energy - ref_sum) / natoms(cell)
 end
