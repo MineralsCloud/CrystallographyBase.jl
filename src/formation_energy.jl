@@ -35,7 +35,7 @@ total number of atoms.
 - `component_energies`: A mapping from atom label to reference energy per atom.
 """
 function formation_energy(cell::Cell, energy, component_energies)
-    ref_sum = sum(component_energies[atom] for atom in cell.atoms)
+    ref_sum = sum(get(component_energies, atom, missing) for atom in cell.atoms)
     return (energy - ref_sum) / natoms(cell)
 end
 
