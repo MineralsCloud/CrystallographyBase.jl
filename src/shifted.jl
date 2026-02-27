@@ -5,7 +5,7 @@ import CrystallographyCore: basisvectors, natoms, atomtypes
 
 export ShiftedLattice, ShiftedCell, shift
 
-@struct_hash_equal_isequal_isapprox struct ShiftedLattice{T} <: AbstractLattice{T}
+@struct_hash_equal_isequal struct ShiftedLattice{T} <: AbstractLattice{T}
     original::Lattice{T}
     by::SVector{3,T}
 end
