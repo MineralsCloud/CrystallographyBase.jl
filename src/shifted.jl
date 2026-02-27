@@ -1,11 +1,11 @@
 using CrystallographyCore: Inverted
-using StructEquality: @struct_hash_equal_isequal, @struct_hash_equal_isequal_isapprox
+using StructEqualHash: @struct_equal_hash
 
 import CrystallographyCore: basisvectors, natoms, atomtypes
 
 export ShiftedLattice, ShiftedCell, shift
 
-@struct_hash_equal_isequal struct ShiftedLattice{T} <: AbstractLattice{T}
+struct ShiftedLattice{T} <: AbstractLattice{T}
     original::Lattice{T}
     by::SVector{3,T}
 end
@@ -13,6 +13,7 @@ function ShiftedLattice(lattice::Lattice, 𝐱::AbstractVector)
     T = Base.promote_eltype(lattice, 𝐱)
     return ShiftedLattice(convert(Lattice{T}, lattice), SVector{3,T}(𝐱))
 end
+@struct_equal_hash ShiftedLattice
 
 basisvectors(shifted::ShiftedLattice) = basisvectors(parent(shifted))
 
