@@ -9,13 +9,14 @@ export ShiftedLattice, ShiftedCell, shift
     original::Lattice{T}
     by::SVector{3,T}
 end
-
-basisvectors(shifted::ShiftedLattice) = basisvectors(parent(shifted))
-
-function shift(lattice::Lattice, 𝐱::AbstractVector)
+function ShiftedLattice(lattice::Lattice, 𝐱::AbstractVector)
     T = Base.promote_eltype(lattice, 𝐱)
     return ShiftedLattice(convert(Lattice{T}, lattice), SVector{3,T}(𝐱))
 end
+
+basisvectors(shifted::ShiftedLattice) = basisvectors(parent(shifted))
+
+shift(lattice::Lattice, 𝐱::AbstractVector) = ShiftedLattice(lattice, 𝐱)
 shift(shifted::ShiftedLattice, 𝐱::AbstractVector) = shift(parent(shifted), shifted.by .+ 𝐱)
 function shift(lattice::Lattice, x::Integer, y::Integer, z::Integer)
     𝐚, 𝐛, 𝐜 = basisvectors(lattice)
