@@ -1,5 +1,4 @@
 using LinearAlgebra: det
-using StaticArrays: MMatrix
 
 @testset "Test the simplest `supercell` for a `Lattice`" begin
     lattice = Lattice(2, 1, 5, 90, 90, 90)
