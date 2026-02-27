@@ -1,4 +1,4 @@
-using CrystallographyCore: AbstractCell, Inverted
+using CrystallographyCore: Inverted
 using StructEquality: @struct_hash_equal_isequal, @struct_hash_equal_isequal_isapprox
 
 import CrystallographyCore: basisvectors, natoms, atomtypes
