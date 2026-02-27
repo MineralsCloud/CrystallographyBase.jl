@@ -26,6 +26,8 @@ latticesystem
 latticeconstants
 periodicity
 Cell
+ReferenceAtom
+MagneticAtom
 super
 eachatom
 ```
@@ -61,4 +63,5 @@ StandardizedFromPrimitive
 cellvolume
 crystaldensity
 atomicmass
+formation_energy
 ```
