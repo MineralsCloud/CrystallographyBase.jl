@@ -1,6 +1,8 @@
 using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: I, isdiag, diag
 
+export MagneticAtom
+
 """
     super(cell::Cell, factors::AbstractMatrix{<:Integer})
     super(cell::Cell, factors::AbstractVector{<:Integer})
@@ -31,4 +33,18 @@ function super(cell::Cell, factors::AbstractMatrix{<:Integer})
     end
     new_lattice = super(cell.lattice, factors)
     return Cell(new_lattice, new_positions, new_atoms)
+end
+
+"""
+    MagneticAtom(label, magnetic_moment)
+
+An atom label paired with its initial magnetic moment.
+
+# Arguments
+- `label`: The atomic label (e.g., a `Symbol`, `String`, or custom type).
+- `magnetic_moment`: The magnetic moment of the atom (scalar for collinear, vector for non-collinear).
+"""
+struct MagneticAtom{L,M}
+    label::L
+    magnetic_moment::M
 end
