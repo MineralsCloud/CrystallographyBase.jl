@@ -2,7 +2,7 @@
 
 ```@contents
 Pages = ["contributing.md"]
-Depth = 2
+Depth = 2:3
 ```
 
 Welcome! This document explains some ways you can contribute to CrystallographyBase.
@@ -133,15 +133,15 @@ The next step is to check out a development branch. In a terminal (or command
 prompt on Windows), run:
 
 ```bash
-cd ~/.julia/dev/CrystallographyBase
+$ cd ~/.julia/dev/CrystallographyBase
 
-git remote add GITHUB_ACCOUNT https://github.com/GITHUB_ACCOUNT/CrystallographyBase.jl.git
+$ git remote add GITHUB_ACCOUNT https://github.com/GITHUB_ACCOUNT/CrystallographyBase.jl.git
 
-git checkout main
+$ git checkout main
 
-git pull
+$ git pull
 
-git checkout -b my_new_branch
+$ git checkout -b my_new_branch
 ```
 
 ### Step 5: make changes
@@ -151,7 +151,7 @@ directory.
 
 Make sure you:
 
-- Follow our [Style Guide](@ref style) and [Run JuliaFormatter](@ref).
+- Follow our [Style Guide](@ref) and [Run JuliaFormatter](@ref).
 - Add tests and documentation for any changes or new features.
 
 !!! tip
@@ -218,13 +218,13 @@ After a while, a folder `PKGROOT/docs/build` will appear. Open
 Once you've made changes, you're ready to push the changes to GitHub. Run:
 
 ```bash
-cd ~/.julia/dev/CrystallographyBase
+$ cd ~/.julia/dev/CrystallographyBase
 
-git add .
+$ git add .
 
-git commit -m "A descriptive message of the changes"
+$ git commit -m "A descriptive message of the changes"
 
-git push -u GITHUB_ACCOUNT my_new_branch
+$ git push -u GITHUB_ACCOUNT my_new_branch
 ```
 
 Then go to [our pull request page](https://github.com/MineralsCloud/CrystallographyBase.jl/pulls)
@@ -247,11 +247,11 @@ Once the PR is merged, clean-up your Git repository, ready for the
 next contribution!
 
 ```bash
-cd ~/.julia/dev/CrystallographyBase
+$ cd ~/.julia/dev/CrystallographyBase
 
-git checkout main
+$ git checkout main
 
-git pull
+$ git pull
 ```
 
 !!! note
