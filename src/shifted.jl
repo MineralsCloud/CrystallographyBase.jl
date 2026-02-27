@@ -36,10 +36,11 @@ Base.parent(shifted::ShiftedLattice) = shifted.original
 (inverted::Inverted{<:ShiftedLattice})(cartesian::AbstractVector) =
     inv(parent(inverted.lattice))(cartesian .- inverted.lattice.by)
 
-@struct_hash_equal_isequal mutable struct ShiftedCell{L,P,T} <: AbstractCell
+mutable struct ShiftedCell{L,P,T} <: AbstractCell
     original::Cell{L,P,T}
     by::SVector{3,L}
 end
+@struct_equal_hash ShiftedCell
 
 Base.parent(shifted::ShiftedCell) = shifted.original
 
