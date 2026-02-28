@@ -25,7 +25,7 @@ PeriodicTableExt = "PeriodicTable"
 [compat]
 AnonymousEnums = "0.1"
 Brillouin = "0.5"
-CrystallographyCore = "0.3.3, 0.4.2, 0.5, 0.6"
+CrystallographyCore = "0.7"
 LinearAlgebra = "1"
 Mendeleev = "1"
 PeriodicTable = "1"
