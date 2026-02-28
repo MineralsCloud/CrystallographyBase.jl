@@ -7,39 +7,6 @@ export isrighthanded,
     islefthanded, latticesystem, latticeconstants, periodicity, super, shift
 
 """
-    Lattice(a, b, c, α, β, γ; axis = :a)
-
-Construct a `Lattice` from the six cell parameters.
-
-The default convention we used here is that edge vector 𝐚 in the positive x-axis direction,
-edge vector 𝐛 in the x-y plane with a positive y-axis component,
-and edge vector 𝐜 with a positive z-axis component in the Cartesian system.
-See [Wikipedia](https://en.wikipedia.org/w/index.php?title=Fractional_coordinates&oldid=961675499#In_crystallography).
-You can also choose `axis = :c`.
-"""
-function Lattice(a, b, c, α, β, γ; axis=:a)
-    Ω = cellvolume(a, b, c, α, β, γ)
-    if axis == :a  # See https://en.wikipedia.org/w/index.php?title=Fractional_coordinates&oldid=961675499#In_crystallography
-        sinγ, cosγ, cosα, cosβ, 𝟎 = sind(γ), cosd(γ), cosd(α), cosd(β), zero(a)
-        return Lattice(
-            [a, 𝟎, 𝟎],
-            [b * cosγ, b * sinγ, zero(b)],
-            [c * cosβ, c * (cosα - cosβ * cosγ) / sinγ, Ω / (a * b * sinγ)],
-        )
-    elseif axis == :c  # See https://github.com/LaurentRDC/crystals/blob/2d3a570/crystals/lattice.py#L356-L391
-        sinα, cosα, sinβ, cosβ, 𝟎 = sind(α), cosd(α), sind(β), cosd(β), zero(c)
-        x = Ω / (b * c * sinα)
-        cos′ = (cosα * cosβ - cosd(γ)) / (sinα * sinβ)
-        sin′ = sqrt(1 - cos′^2)
-        return Lattice(
-            [x, -x * cos′ / sin′, a * cosβ], [zero(b), b * sinα, b * cosα], [𝟎, 𝟎, c]
-        )
-    else
-        error("aligning `$axis` axis is not supported!")
-    end
-end
-
-"""
     isrighthanded(lattice::Lattice)
 
 Test whether the basis vectors are defined to be right-handed.
