@@ -21,7 +21,7 @@ Pages = ["public.md"]
 Lattice
 isrighthanded
 islefthanded
-basisvectors
+basisvectors(::Lattice)
 latticesystem
 latticeconstants
 periodicity
@@ -38,6 +38,7 @@ Note that we take ``2\pi`` as ``1``, not the solid-state physics convention.
 
 ```@docs
 ReciprocalLattice
+basisvectors(::ReciprocalLattice)
 MonkhorstPackGrid
 reciprocal
 ```
