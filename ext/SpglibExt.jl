@@ -3,7 +3,10 @@ module SpglibExt
 using CrystallographyBase: MagneticAtom
 
 import CrystallographyCore: Cell
-import Spglib: SpglibCell, unwrap_convert
+import Spglib: SpglibCell, is_spin_collinear, unwrap_convert
+
+is_spin_collinear(cell::Cell{L,P,<:MagneticAtom}) where {L,P} =
+    is_spin_collinear(SpglibCell(cell))
 
 unwrap_convert(cell::Cell{L,P,<:MagneticAtom}) where {L,P} =
     unwrap_convert(SpglibCell(cell))
