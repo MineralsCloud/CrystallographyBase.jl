@@ -11,3 +11,12 @@ function Base.show(io::IO, ::MIME"text/plain", atom::MagneticAtom)
     println(io, " magmom=", atom.magnetic_moment)
     return nothing
 end
+function Base.show(io::IO, atom::MagneticAtom)
+    if get(io, :compact, false)
+        # Inside a nested container or when compact printing is explicitly requested
+        print(io, atom.label, "(", atom.magnetic_moment, ")")
+    else
+        # Standard one-line representation (should ideally be a valid Julia expression)
+        print(io, atom.label, " → ", atom.magnetic_moment)
+    end
+end
