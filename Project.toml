@@ -21,6 +21,7 @@ Spglib = "f761d5c5-86db-4880-b97f-9680a7cccfb5"
 BrillouinSpglibExt = ["Brillouin", "Spglib"]
 MendeleevExt = "Mendeleev"
 PeriodicTableExt = "PeriodicTable"
+SpglibExt = "Spglib"
 
 [compat]
 AnonymousEnums = "0.1"
