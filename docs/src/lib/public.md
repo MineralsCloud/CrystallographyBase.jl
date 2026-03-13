@@ -30,6 +30,9 @@ ReferenceAtom
 MagneticAtom
 super
 eachatom
+natoms
+atomtypes
+atomcounts
 ```
 
 ### Reciprocal space
