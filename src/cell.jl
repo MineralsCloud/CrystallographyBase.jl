@@ -1,7 +1,7 @@
 using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: I, isdiag, diag
 
-export MagneticAtom, MagneticCell, magnetization
+export MagneticAtom, MagneticCell, ismagnetic, magnetization
 
 """
     super(cell::Cell, factors::AbstractMatrix{<:Integer})
@@ -50,6 +50,24 @@ struct MagneticAtom{L,M}
 end
 
 const MagneticCell = Cell{L,P,<:MagneticAtom} where {L,P}
+
+"""
+    ismagnetic(atom::MagneticAtom, tol=1e-8)
+
+Return `true` if the magnetic moment of `atom` is larger than `tol`.
+
+The function is tolerant of small numerical noise and treats moments with magnitude
+≤ `tol` as non-magnetic.
+"""
+ismagnetic(atom::MagneticAtom, tol=1e-8) = norm(atom.magnetic_moment) > tol
+"""
+    ismagnetic(cell::MagneticCell, tol=1e-8)
+
+Return `true` if the total magnetic moment in `cell` (sum over all atoms) is
+larger than `tol` in magnitude.
+"""
+ismagnetic(cell::MagneticCell, tol=1e-8) =
+    norm(sum(atom.magnetic_moment for atom in cell.atoms)) > tol
 
 """
     magnetization(cell::Cell)
