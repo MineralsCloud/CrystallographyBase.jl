@@ -33,6 +33,10 @@ eachatom
 natoms
 atomtypes
 atomcounts
+cellvolume
+crystaldensity
+atomicmass
+formation_energy
 ```
 
 ### Reciprocal space
@@ -59,13 +63,4 @@ distance
 ```@docs
 PrimitiveFromStandardized
 StandardizedFromPrimitive
-```
-
-### Others
-
-```@docs
-cellvolume
-crystaldensity
-atomicmass
-formation_energy
 ```
