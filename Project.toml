@@ -26,7 +26,7 @@ SpglibExt = "Spglib"
 [compat]
 AnonymousEnums = "0.1"
 Brillouin = "0.5"
-CrystallographyCore = "0.7"
+CrystallographyCore = "1"
 LinearAlgebra = "1"
 Mendeleev = "1"
 PeriodicTable = "1"
