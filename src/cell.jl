@@ -1,7 +1,7 @@
 using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: I, isdiag, diag
 
-export MagneticAtom
+export MagneticAtom, magnetization
 
 """
     super(cell::Cell, factors::AbstractMatrix{<:Integer})
@@ -48,3 +48,13 @@ struct MagneticAtom{L,M}
     label::L
     magnetic_moment::M
 end
+
+"""
+    magnetization(cell::Cell)
+
+Return the magnetization (magnetic moment density) of a cell containing `MagneticAtom`s.
+
+The magnetization is defined as the sum of all atomic magnetic moments divided by the cell volume.
+"""
+magnetization(cell::Cell{L,P,<:MagneticAtom}) where {L,P} =
+    sum(atom.magnetic_moment for atom in cell.atoms) / cellvolume(cell)
