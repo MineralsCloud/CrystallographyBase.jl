@@ -11,4 +11,5 @@ using UnitfulAtomic
     include("metric.jl")
     include("reciprocal.jl")
     include("shifted.jl")
+    include("magnetic.jl")
 end
