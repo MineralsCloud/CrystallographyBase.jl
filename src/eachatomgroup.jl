@@ -33,7 +33,7 @@ end
 function eachatomgroup(cell::AbstractCell)
     types = atomtypes(cell)
     return Iterators.map(types) do type
-        indices = findall(==(type), cell.atoms)
-        AtomGroup(type, Tuple(cell.positions[indices]))
+        indices = Tuple(findall(==(type), cell.atoms))
+        AtomGroup(type, indices)
     end
 end
