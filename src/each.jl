@@ -117,3 +117,14 @@ function each_equivalent_atom(cell::AbstractCell, equivalence::AbstractVector{<:
         EquivalentAtomGroup(atom, g, indices)
     end
 end
+
+"""
+    eachatom(group::EquivalentAtomGroup, cell::AbstractCell)
+
+Iterate over `(atom, position)` pairs for a given `EquivalentAtomGroup`.
+"""
+function eachatom(group::EquivalentAtomGroup, cell::AbstractCell)
+    indices = group.indices
+    positions = cell.positions[indices]
+    return EachAtom(fill(group.atom, length(indices)), positions)
+end
