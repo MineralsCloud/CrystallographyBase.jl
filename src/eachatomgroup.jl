@@ -4,9 +4,9 @@ import CrystallographyCore: eachatom
 
 export eachatomgroup
 
-struct AtomGroup{N,A,B}
-    atom::A
-    positions::NTuple{N,B}
+struct AtomGroup{N,T}
+    atom::T
+    indices::NTuple{N,Int64}
 end
 
 eachatom(group::AtomGroup) =
