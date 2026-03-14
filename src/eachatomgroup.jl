@@ -4,6 +4,21 @@ import CrystallographyCore: eachatom
 
 export eachatomgroup
 
+"""
+    AtomGroup(atom, indices)
+
+Container for one atom type and the indices of all atoms of that type in a cell.
+
+# Fields
+- `atom`: The atom label/value shared by the group (for example `:Si`, `"O"`,
+    or any custom atom type).
+- `indices`: An `NTuple` of integer indices into `cell.atoms` or `cell.positions`
+    identifying the atoms belonging to this group.
+
+Use `cell.positions[group.indices]` to obtain the corresponding fractional coordinates.
+
+See also [`eachatomgroup`](@ref), [`eachatom`](@ref).
+"""
 struct AtomGroup{N,T}
     atom::T
     indices::NTuple{N,Int64}
