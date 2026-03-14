@@ -19,6 +19,8 @@ Pages = ["public.md"]
 
 ```@docs
 Lattice
+Base.:*(::AbstractMatrix, ::Lattice)
+Base.:*(::Lattice, ::AbstractMatrix)
 isrighthanded
 islefthanded
 basisvectors(::Lattice)
@@ -32,11 +34,20 @@ super
 eachatom
 natoms
 atomtypes
+eachatomtype
+each_equivalent_atom
 atomcounts
 cellvolume
 crystaldensity
 atomicmass
+```
+
+#### Other properties
+
+```@docs
 formation_energy
+ismagnetic
+magnetization
 ```
 
 ### Reciprocal space
