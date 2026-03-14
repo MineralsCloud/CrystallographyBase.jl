@@ -15,8 +15,10 @@ See also [`eachatomtype`](@ref), [`eachatom`](@ref).
 """
 struct AtomTypeGroup{N,T}
     atom::T
-    indices::NTuple{N,Int64}
+    indices::SVector{N,Int64}
 end
+AtomTypeGroup(atom, indices::AbstractVector) =
+    AtomTypeGroup(atom, SVector{length(indices)}(indices))
 
 function eachatom(group::AtomTypeGroup, cell::AbstractCell)
     return EachAtom(
@@ -43,8 +45,8 @@ julia> cell = Cell(rand(3, 3), [[0, 0, 0], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25]],
 julia> group = collect(eachatomtype(cell))[1]
 AtomTypeGroup{2, Symbol}(:Si, (1, 2))
 
-julia> cell.positions[collect(group.indices)]
-2-element Array{ReducedCoordinates{Float64}, 1}:
+julia> cell.positions[group.indices]
+...
  [0.0, 0.0, 0.0]
  [0.5, 0.5, 0.5]
 ```
@@ -52,7 +54,7 @@ julia> cell.positions[collect(group.indices)]
 function eachatomtype(cell::AbstractCell)
     types = atomtypes(cell)
     return Iterators.map(types) do type
-        indices = Tuple(findall(==(type), cell.atoms))
+        indices = findall(==(type), cell.atoms)
         AtomTypeGroup(type, indices)
     end
 end
