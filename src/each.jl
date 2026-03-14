@@ -37,15 +37,13 @@ The output order follows `atomtypes(cell)` (first appearance order in `cell.atom
 
 # Examples
 ```jldoctest
-julia> cell = Cell(rand(3, 3), [[0, 0, 0], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25]], [:Si, :Si, :O])
+julia> cell = Cell(rand(3, 3), [[0, 0, 0], [0.5, 0.5, 0.5], [0.25, 0.25, 0.25]], [:Si, :Si, :O]);
 
 julia> group = collect(eachatomtype(cell))[1]
-AtomTypeGroup{2, Symbol}(:Si, (1, 2))
+CrystallographyBase.AtomTypeGroup{2, Symbol}(:Si, [1, 2])
 
-julia> cell.positions[group.indices]
-...
- [0.0, 0.0, 0.0]
- [0.5, 0.5, 0.5]
+julia> cell.positions[group.indices] == [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5]]
+true
 ```
 """
 function eachatomtype(cell::AbstractCell)
