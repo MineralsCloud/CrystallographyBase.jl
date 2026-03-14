@@ -24,8 +24,11 @@ struct AtomGroup{N,T}
     indices::NTuple{N,Int64}
 end
 
-eachatom(group::AtomGroup) =
-    EachAtom(ntuple(Returns(group.atom), length(group.positions)), group.positions)
+function eachatom(group::AtomGroup, cell::AbstractCell)
+    return EachAtom(
+        ntuple(Returns(group.atom), length(group.indices)), cell.positions[group.indices]
+    )
+end
 
 function eachatomgroup(cell::AbstractCell)
     types = atomtypes(cell)
