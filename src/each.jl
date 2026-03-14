@@ -20,11 +20,8 @@ end
 AtomTypeGroup(atom, indices::AbstractVector) =
     AtomTypeGroup(atom, SVector{length(indices)}(indices))
 
-function eachatom(group::AtomTypeGroup, cell::AbstractCell)
-    return EachAtom(
-        ntuple(Returns(group.atom), length(group.indices)), cell.positions[group.indices]
-    )
-end
+eachatom(group::AtomTypeGroup, cell::AbstractCell) =
+    EachAtom(fill(group.atom, length(group.indices)), cell.positions[group.indices])
 
 """
     eachatomtype(cell::AbstractCell)
