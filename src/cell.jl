@@ -1,7 +1,7 @@
 using CrystallographyCore: Cell, eachatom
 using LinearAlgebra: I, isdiag, diag
 
-export MagneticAtom, MagneticCell, ismagnetic, magnetization
+export MagneticAtom, MagneticCell, add_magmoms, ismagnetic, magnetization
 
 """
     super(cell::Cell, factors::AbstractMatrix{<:Integer})
@@ -50,6 +50,15 @@ struct MagneticAtom{L,M}
 end
 
 const MagneticCell = Cell{L,P,<:MagneticAtom} where {L,P}
+
+function add_magmoms(cell::Cell, magmoms::AbstractArray)
+    if length(magmoms) != natoms(cell)
+        throw(DimensionMismatch("number of magmoms must match number of atoms in cell!"))
+    end
+    return Cell(Lattice(cell), cell.positions, MagneticAtom.(cell.atoms, magmoms))
+end
+add_magmoms(cell::MagneticCell, magmoms) =
+    throw(TypeError(:append_magmoms, "append_magmoms($cell, $magmoms)", Cell, MagneticCell))
 
 """
     ismagnetic(atom::MagneticAtom, tol=1e-8)
